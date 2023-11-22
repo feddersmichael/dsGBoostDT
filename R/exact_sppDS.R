@@ -1,4 +1,0 @@
-
-exact_sppDS <- function(){
-  
-}
