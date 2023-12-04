@@ -20,7 +20,7 @@ sep_variablesDS <- function(data_name){
   data_test[[1]] <- data_train_test[[2]][,1:no_var-1]
   data_test[[2]] <- data_train_test[[2]][no_var]
   
-  output[[1]] <- data_test
+  output[[2]] <- data_test
   
   return(output)
 }
