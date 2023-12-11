@@ -1,20 +1,42 @@
 
-# TODO: What if data is too big to load into the environment all at once?
 # TODO: Where is max_min saved
 # TODO: if else step with generating spp and spsc new or recycle old ones
 # TODO: A LOT!!! (checks etc)
-calc_histDS <- function(data_name, min_max, spp_cand, 
-                        loss_function = "quadratic", 
-                        data_type = "numeric_cont"){
+calc_histDS <- function(data_name, loss_function, data_type, curr_tree, 
+                        spp_cand){
   
-  # We read in the data
+  # We first check all the inputs for appropriate class
+  if (!is.character(data_name)){
+    stop("'data_name' needs to have data type 'character'.")
+  }
+  
+  if (!is.character(loss_function)){
+    stop("'loss_function' needs to have data type 'character'.")
+  }
+  
+  if (!is.character(data_type)){
+    stop("'data_type' needs to have data type 'character'.")
+  }
+  
+  if (!is.data.frame(curr_tree)){
+    stop("'curr_tree' needs to be an object of type 'data frame'.")
+  }
+  
+  if (!is.list(spp_cand)){
+    stop("'spp_cand' needs to be an object of type 'list'.")
+  }
+  
+  # We read in the data from the server and extract the features and output
+  # from the training-data.
   data_sep <- eval(parse(text = paste0(data_name, "_sep")), 
                    envir = parent.frame())
-  
   training_features <- data_sep[[1]][[1]]
   training_output <- data_sep[[1]][[2]]
   
-  # or as an argument
+  
+  
+  # We also need the load in the predicted output value of the boosted_tree up
+  # to now.
   current_prediction <- cur_predDS()
   
   
