@@ -23,7 +23,7 @@ tree_evaluationDS <- function(data_point, tree){
     cur_feat <- tree$Feature[[cur_split_point]]
     cur_spl_val <- tree$split_value[[cur_split_point]]
     if (data_point[[cur_feat]] < cur_spl_val){
-      if (tree$w_s_left[[cur_split_point]] == "w"){
+      if (tree$w_s_left[[cur_split_point]]){
         weight <- tree$w_s_left_value[[cur_split_point]]
       }
       else {
@@ -31,7 +31,7 @@ tree_evaluationDS <- function(data_point, tree){
       }
     }
     else {
-      if (tree$w_s_right[[cur_split_point]] == "w"){
+      if (tree$w_s_right[[cur_split_point]]){
         weight <- tree$w_s_right_value[[cur_split_point]]
       }
       else {
