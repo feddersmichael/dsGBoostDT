@@ -25,11 +25,11 @@ data_splitDS <- function(training_features, min_max, current_tree){
   cur_feature <- current_tree$Feature[current_split]
   cur_spv <- current_tree$split_value[current_split]
   
-  breaks <- c(min_max[[cur_feature]][1], cur_spv, min_max[[cur_feature]][2])
+  breaks <- c(min_max[1, cur_feature], cur_spv, min_max[2, cur_feature])
   cuts <- cut(training_features[[cur_feature]], breaks)
   data_split <- split(training_features[[1]], cuts)
   
   data_1 <- training_features[data_split[[1]], ]
   data_2 <- training_features[data_split[[2]], ]
-  return(list(data_1, data_2))
+  return(list(list(data_1), list(data_2)))
 }
