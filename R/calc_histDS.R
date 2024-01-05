@@ -23,6 +23,14 @@ calc_histDS <- function(data_name, last_tr_tree){
     training_data[[2]]$grad <- -2 * (training_data[[2]][[1]] - 
                                        training_data[[2]]$pred)
   }
+  else if (loss_function == "binary_cross_entropy"){
+    output <- training_data[[1]]
+    prediction <- training_data[[2]]$pred
+    pred_1 <- prediction - 1
+    training_data[[2]]$grad <- (output - prediction) / 
+      (pred_1 * prediction)
+    training_data[[2]]$hess <- output / prediction^2 - (output - 1) / pred_1^2
+  }
   
   return(training_data)
 }
