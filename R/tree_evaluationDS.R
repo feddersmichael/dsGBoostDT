@@ -1,6 +1,7 @@
 
 # TODO: write wrapper for dataframes instead of data points
 # TODO: check if unique boost time or not
+# TODO: NA-data
 tree_evaluationDS <- function(data_point, tree){
   
   if (!is.data.frame(tree)){
