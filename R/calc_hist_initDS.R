@@ -1,13 +1,11 @@
 
-#' calc_hist_initDS
+#' Calculate the predicted output and histograms
 #'
-#' @param data_name 
-#' @param loss_function 
+#' @param data_name Name of the data.
+#' @param loss_function Type of loss function und wehich the tree is optimised.
 #'
-#' @return
+#' @return The training features and calculated output and histograms.
 #' @export
-#'
-#' @examples
 calc_hist_initDS <- function(data_name, loss_function){
   # TODO: prediction initialization -> hyper parameter optimization?
   
@@ -20,9 +18,9 @@ calc_hist_initDS <- function(data_name, loss_function){
                    envir = parent.frame())
   
   no_var <- length(colnames(data_set[[1]]))
-  data_amt <- nrow(training_data)
   training_features <- data_set[[1]][,1:no_var-1]
   training_output <- data_set[[1]][no_var]
+  data_amt <- nrow(training_features)
   
   if (loss_function == "quadratic"){
     

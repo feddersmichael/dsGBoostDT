@@ -1,16 +1,14 @@
 
-#' split_binsDS
+#' Split up the data into bins by slitting points.
 #'
-#' @param data_name 
-#' @param min_max 
-#' @param spp_cand 
-#' @param current_tree 
-#' @param data_type 
+#' @param data_name The name of the data.
+#' @param min_max The maximum and minimum values of the features.
+#' @param spp_cand The Splitting-point candidates.
+#' @param current_tree The currently trained tree.
+#' @param data_type The type of data per feature.
 #'
-#' @return
+#' @return The histogram bins for each split in all features.
 #' @export
-#'
-#' @examples
 split_binsDS <- function(data_name, min_max, spp_cand, current_tree, data_type){
   
   # We first check all the inputs for appropriate class
@@ -42,7 +40,7 @@ split_binsDS <- function(data_name, min_max, spp_cand, current_tree, data_type){
   # leaves.
   amt_spp <- nrow(current_tree)
   # If the tree is empty we use the whole data for the splits.
-  if (amt_spp = 0){
+  if (amt_spp == 0){
     leaves <- list(training_features)
   }
   else {

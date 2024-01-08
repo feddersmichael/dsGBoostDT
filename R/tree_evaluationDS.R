@@ -1,13 +1,11 @@
 
-#' tree_evaluationDS
+#' Evaluate an output of a data-point under a tree.
 #'
-#' @param data_point 
-#' @param tree 
+#' @param data_point The data-point to be evaluated.
+#' @param tree The tree which maps the data.
 #'
-#' @return
+#' @return The output under the tree.
 #' @export
-#'
-#' @examples
 tree_evaluationDS <- function(data_point, tree){
   # TODO: write wrapper for dataframes instead of data points
   # TODO: check if unique boost time or not

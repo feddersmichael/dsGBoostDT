@@ -1,14 +1,14 @@
 
-#' calc_histDS
+#' Calculate the histograms.
 #'
-#' @param data_name 
-#' @param last_tr_tree 
+#' @param data_name Name of the data.
+#' @param last_tr_tree The last tree which was trained.
+#' @param loss_function The type of loss-function under which we optimizes our
+#' boosted tree.
 #'
-#' @return
+#' @return The training features and calculated output and histograms.
 #' @export
-#'
-#' @examples
-calc_histDS <- function(data_name, last_tr_tree){
+calc_histDS <- function(data_name, last_tr_tree, loss_function){
   
   # We first check all the inputs for appropriate class
   if (!is.character(data_name)){

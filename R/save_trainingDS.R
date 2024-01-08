@@ -1,12 +1,10 @@
 
-#' save_trainingDS
+#' Split up data in training features and training output
 #'
-#' @param data_name 
+#' @param data_name Name of the data.
 #'
-#' @return
+#' @return The split.
 #' @export
-#'
-#' @examples
 save_trainingDS <- function(data_name){
   
   data_set <- eval(parse(text = paste0(data_name, "_training_test_split")), 

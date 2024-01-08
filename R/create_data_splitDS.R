@@ -1,20 +1,18 @@
 
-#' create_data_splitDS
+#' Separate Training and Test data
 #'
-#' @param data_name 
-#' @param train_test_ratio 
-#' @param split_status 
+#' @param data_name Name of the data.
+#' @param train_test_ratio Ratio of training data of teh whole data.
+#' @param split_status If the data is already split.
 #'
-#' @return
+#' @return The training-test split.
 #' @export
-#'
-#' @examples
 create_data_splitDS <- function(data_name, train_test_ratio, split_status){
   
-  # We first check all the inputs for appropriate class
-  if (!is.numeric(train_test_ratio) || !(0 <= numeric(train_test_ratio) <= 1)){
+  if (!is.numeric(train_test_ratio) || (numeric(train_test_ratio) < 0) || 
+      (numeric(train_test_ratio) > 1)){
     stop(paste0("'train_test_ratio' needs to have data type 'numeric' and lie",
-    " between 0 and 1."))
+                " between 0 and 1."))
   }
   
   if (is.null(split_status)){

@@ -1,14 +1,12 @@
 
-#' data_splitDS
+#' Reduce the data to the last added leaves
 #'
-#' @param training_features 
-#' @param min_max 
-#' @param current_tree 
+#' @param training_features All the training data per features.
+#' @param min_max List of maximum and minimum value per feature.
+#' @param current_tree The currently trained tree.
 #'
-#' @return
+#' @return The two last added leafs of the tree.
 #' @export
-#'
-#' @examples
 data_splitDS <- function(training_features, min_max, current_tree){
   
   current_split <- nrow(current_tree)
