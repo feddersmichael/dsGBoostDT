@@ -2,7 +2,7 @@
 #' Calculate the predicted output and histograms
 #'
 #' @param data_name Name of the data.
-#' @param loss_function Type of loss function und wehich the tree is optimised.
+#' @param loss_function Type of loss function under which the tree is optimised.
 #'
 #' @return The training features and calculated output and histograms.
 #' @export
