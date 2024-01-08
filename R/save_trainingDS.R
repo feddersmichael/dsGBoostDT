@@ -1,4 +1,12 @@
 
+#' save_trainingDS
+#'
+#' @param data_name 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 save_trainingDS <- function(data_name){
   
   data_set <- eval(parse(text = paste0(data_name, "_training_test_split")), 

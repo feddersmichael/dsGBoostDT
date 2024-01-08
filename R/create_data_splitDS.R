@@ -1,4 +1,14 @@
 
+#' create_data_splitDS
+#'
+#' @param data_name 
+#' @param train_test_ratio 
+#' @param split_status 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 create_data_splitDS <- function(data_name, train_test_ratio, split_status){
   
   # We first check all the inputs for appropriate class

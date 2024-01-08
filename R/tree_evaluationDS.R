@@ -1,9 +1,17 @@
 
-# TODO: write wrapper for dataframes instead of data points
-# TODO: check if unique boost time or not
-# TODO: NA-data
+#' tree_evaluationDS
+#'
+#' @param data_point 
+#' @param tree 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 tree_evaluationDS <- function(data_point, tree){
-  
+  # TODO: write wrapper for dataframes instead of data points
+  # TODO: check if unique boost time or not
+  # TODO: NA-data
   if (!is.data.frame(tree)){
     stop("'tree' needs to be an object of type 'data frame'.")
   }

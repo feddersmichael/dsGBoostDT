@@ -1,4 +1,14 @@
 
+#' data_splitDS
+#'
+#' @param training_features 
+#' @param min_max 
+#' @param current_tree 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 data_splitDS <- function(training_features, min_max, current_tree){
   
   current_split <- nrow(current_tree)

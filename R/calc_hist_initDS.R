@@ -1,6 +1,15 @@
 
-# TODO: prediction initialization -> hyper parameter optimization?
+#' calc_hist_initDS
+#'
+#' @param data_name 
+#' @param loss_function 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calc_hist_initDS <- function(data_name, loss_function){
+  # TODO: prediction initialization -> hyper parameter optimization?
   
   # We first check all the inputs for appropriate class
   if (!is.character(data_name)){

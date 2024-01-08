@@ -1,4 +1,13 @@
 
+#' calc_histDS
+#'
+#' @param data_name 
+#' @param last_tr_tree 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calc_histDS <- function(data_name, last_tr_tree){
   
   # We first check all the inputs for appropriate class

@@ -1,4 +1,16 @@
 
+#' split_binsDS
+#'
+#' @param data_name 
+#' @param min_max 
+#' @param spp_cand 
+#' @param current_tree 
+#' @param data_type 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 split_binsDS <- function(data_name, min_max, spp_cand, current_tree, data_type){
   
   # We first check all the inputs for appropriate class
