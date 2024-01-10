@@ -5,7 +5,6 @@
 #' @param tree The tree which maps the data.
 #'
 #' @return The output under the tree.
-#' @export
 tree_evaluationDS <- function(data_point, tree){
   # TODO: write wrapper for dataframes instead of data points
   # TODO: check if unique boost time or not
