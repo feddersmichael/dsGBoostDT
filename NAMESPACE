@@ -3,7 +3,4 @@
 export(calc_histDS)
 export(calc_hist_initDS)
 export(create_data_splitDS)
-export(data_splitDS)
-export(save_trainingDS)
 export(split_binsDS)
-export(tree_evaluationDS)

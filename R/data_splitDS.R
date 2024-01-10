@@ -6,7 +6,6 @@
 #' @param current_tree The currently trained tree.
 #'
 #' @return The two last added leafs of the tree.
-#' @export
 data_splitDS <- function(training_features, min_max, current_tree){
   
   current_split <- nrow(current_tree)
