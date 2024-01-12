@@ -2,63 +2,33 @@
 #' Separate Training and Test data
 #'
 #' @param data_name Name of the data.
-#' @param train_test_ratio Ratio of training data of teh whole data.
-#' @param split_status If the data is already split.
+#' @param train_test_ratio Ratio of training data of the whole data.
 #'
 #' @return The training-test split.
 #' @export
-create_data_splitDS <- function(data_name, train_test_ratio, split_status) {
-
-  if (is.null(split_status)) {
-    if (!is.character(data_name) || length(data_name) != 1) {
-      stop("'data_name' needs to be an atomic vector with data type 'character'.")
-    }
-
-    if (!is.numeric(train_test_ratio) || (numeric(train_test_ratio) < 0) ||
-          (numeric(train_test_ratio) > 1)) {
-      stop("'train_test_ratio' needs to have data type 'numeric' and lie between 0 and 1.")
-    }
-
-    data_set <- eval(parse(text = data_name), envir = parent.frame())
-
-    # We extract the amount of data points and calculate our training size
-    nrows <- nrow(data_set)
-    no_training_points <- as.integer(nrows * train_test_ratio)
-
-    # Now we can create a training set by selecting an amount of data points
-    # according to the train_test_ratio
-    training_choice <- sample.int(nrows, no_training_points)
-
-    output <- list()
-    output[[1]] <- data_set[training_choice, ]
-    output[[2]] <- data_set[-training_choice, ]
+create_data_splitDS <- function(data_name, data_classes, output_var,
+                                drop_columns, train_test_ratio) {
+  
+  data_set <- eval(parse(text = data_name), envir = parent.frame())
+  
+  # We remove the rows which contain 'NA' values in the output variable.
+  data_set <- data_set[!is.na(data_set[[output_var]]), ]
+  
+  if (!is.null(drop_columns)) {
+    
   }
-  else if (split_status == "Train") {
-    if (!is.character(data_name) || length(data_name) != 1) {
-      stop("'data_name' needs to be an atomic vector with data type 'character'.")
-    }
-
-    train_set <- eval(parse(text = data_name), envir = parent.frame())
-
-    output <- list()
-    output[[1]] <- train_set
-    output[[2]] <- NULL
-  }
-  else if (split_status == "Train_Test") {
-    if (!is.character(data_name) || length(data_name) != 2) {
-      stop("'data_name' needs to be an object of type 'vector' with data type 'character' and length 2.")
-    }
-
-    train_set <- eval(parse(text = data_name[1]), envir = parent.frame())
-    test_set <- eval(parse(text = data_name[2]), envir = parent.frame())
-
-    output <- list()
-    output[[1]] <- train_set
-    output[[2]] <- test_set
-  }
-  else {
-    stop("'split_status' needs to be either 'NULL' or an atomic vector with data type 'character'.")
-  }
+  
+  # We extract the amount of data points and calculate our training size
+  nrows <- nrow(data_set)
+  no_training_points <- as.integer(nrows * train_test_ratio)
+  
+  # Now we can create a training set by selecting an amount of data points
+  # according to the train_test_ratio
+  training_choice <- sample.int(nrows, no_training_points)
+  
+  output <- list()
+  output[[1]] <- data_set[training_choice, ]
+  output[[2]] <- data_set[-training_choice, ]
 
   return(output)
 }

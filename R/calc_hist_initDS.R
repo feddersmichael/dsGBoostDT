@@ -6,7 +6,7 @@
 #'
 #' @return The training features and calculated output and histograms.
 #' @export
-calc_hist_initDS <- function(data_name, loss_function) {
+calc_hist_initDS <- function(data_name, loss_function, output_var) {
   # TODO: prediction initialization -> hyper parameter optimization?
 
   # We first check all the inputs for appropriate class
@@ -16,10 +16,13 @@ calc_hist_initDS <- function(data_name, loss_function) {
 
   data_set <- eval(parse(text = paste0(data_name, "_training_test_split")),
                    envir = parent.frame())
-
-  no_var <- ncol(data_set[[1]])
-  training_features <- data_set[[1]][, 1:no_var - 1]
-  training_output <- data_set[[1]][no_var]
+  
+  column_names <- colnames(data_set)
+  output_nmbr <- which(column_names == output_var)[1]
+  
+  # TODO: remove unnecessary columns + add data_name_ID
+  training_features <- data_set[[1]][, -output_nmbr]
+  training_output <- data_set[[1]][output_nmbr]
   data_amt <- nrow(training_features)
 
   if (loss_function == "quadratic") {

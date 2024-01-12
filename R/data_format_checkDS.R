@@ -1,5 +1,6 @@
 
-data_format_checkDS <- function(data_name, bounds_and_levels, drop_NA) {
+data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
+                                loss_function, drop_NA) {
   #TODO: Possibility to overwrite levels for factors.
   
   if (!exists(data_name)) {
@@ -18,9 +19,18 @@ data_format_checkDS <- function(data_name, bounds_and_levels, drop_NA) {
     stop("The column names of the data set don't coincide with the expected names.")
   }
   
+  cont_NA <- !is.na(data_set[[output_var]])
+  
+  if (!all(cont_NA)) {
+    if (drop_NA) {
+      warning("The data contains 'NA' values in the output variable.")
+      # data_set <- data_set[cont_NA, ]
+    } else {
+      stop("The data contains 'NA' values in the output variable.")
+    }
+  }
+  
   data_classes <- sapply(data_set, data.class)
-  
-  
   
   for (i in 1:length(exp_columns)) {
     if (is.numeric(data_classes[i])) {
@@ -40,5 +50,17 @@ data_format_checkDS <- function(data_name, bounds_and_levels, drop_NA) {
     }
   }
   
+  if (identical(loss_function, "quadratic")) {
+    if (!identical(data.class(data_set[[output_var]]), "numeric")) {
+      stop(paste0("The loss function '", loss_function, "' is not suitable for this type of data."))
+    }
+  }
+  else if (identical(loss_function, "binary_cross_entropy")) {
+    if (!identical(data.class(data_set[[output_var]]), "numeric")
+        || !identical(bounds_and_levels[[output_var]], c(-1, 1))) {
+      stop(paste0("The loss function '", loss_function, "' is not suitable for this type of data."))
+    }
+  }
   
+  return(data_classes)
 }
