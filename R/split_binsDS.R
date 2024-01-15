@@ -23,7 +23,6 @@ split_binsDS <- function(data_name, min_max, spp_cand, current_tree, data_type){
   if (!is.list(spp_cand)){
     stop("'spp_cand' needs to be an object of type 'list'.")
   }
-
   
   # We read in the data from the server and extract the features, output and 
   # predicted output from the training data

@@ -1,4 +1,5 @@
 AggregateMethods:
+    data_format_checkDS,
     split_binsDS
 AssignMethods:
     calc_hist_initDS,

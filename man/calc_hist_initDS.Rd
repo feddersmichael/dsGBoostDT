@@ -4,12 +4,14 @@
 \alias{calc_hist_initDS}
 \title{Calculate the predicted output and histograms}
 \usage{
-calc_hist_initDS(data_name, loss_function)
+calc_hist_initDS(data_name, loss_function, output_var)
 }
 \arguments{
 \item{data_name}{Name of the data.}
 
 \item{loss_function}{Type of loss function under which the tree is optimised.}
+
+\item{output_var}{The name of the column containing the output.}
 }
 \value{
 The training features and calculated output and histograms.
