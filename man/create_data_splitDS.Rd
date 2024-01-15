@@ -4,14 +4,24 @@
 \alias{create_data_splitDS}
 \title{Separate Training and Test data}
 \usage{
-create_data_splitDS(data_name, train_test_ratio, split_status)
+create_data_splitDS(
+  data_name,
+  data_classes,
+  output_var,
+  drop_columns,
+  train_test_ratio
+)
 }
 \arguments{
 \item{data_name}{Name of the data.}
 
-\item{train_test_ratio}{Ratio of training data of teh whole data.}
+\item{data_classes}{List of data class for all columns.}
 
-\item{split_status}{If the data is already split.}
+\item{output_var}{The name of the column containing the output.}
+
+\item{drop_columns}{Which columns should be removed from the data.}
+
+\item{train_test_ratio}{Ratio of training data of the whole data.}
 }
 \value{
 The training-test split.

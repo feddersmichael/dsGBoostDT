@@ -7,6 +7,8 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
     stop(paste0("There exists no data saved under the name '", data_name, "'."))
   }
   
+  stop("Here")
+  
   data_set <- eval(parse(data_name), envir = parent.frame())
   
   if (!is.data.frame(data_set)) {
@@ -42,11 +44,13 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
         stop(paste0("The values in the column '", exp_columns[i], "' aren't restricted to the expected boundaries."))
       }
     }
-    
-    if (is.factor(data_classes[i])) {
+    else if (is.factor(data_classes[i])) {
       if (!identical(bounds_and_levels[[i]], levels(data_set[[i]]))) {
         stop(paste0("The levels of the column '", exp_columns[i], "' don't coincide with the expected amount or order."))
       }
+    }
+    else {
+      stop("Each column should be either of data class 'numeric' or 'factor'.")
     }
   }
   
