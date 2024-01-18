@@ -20,6 +20,7 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
   }
   
   data_set <- eval(parse(text = data_name), envir = parent.frame())
+
   
   if (!is.data.frame(data_set)) {
     stop(paste0("The object saved under the name '", data_name, "' has data type '",
@@ -57,6 +58,7 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
       }
     }
     else if (data_classes[[i]] == "factor") {
+
       if (!identical(bounds_and_levels[[i]], levels(data_set[[i]]))) {
         stop(paste0("The levels of the column '", exp_columns[i], "' don't coincide with the expected amount or order."))
       }

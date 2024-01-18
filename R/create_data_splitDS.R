@@ -26,6 +26,7 @@ create_data_splitDS <- function(data_name, data_classes, output_var,
   if (!is.null(drop_columns)) {
     for (column in drop_columns) {
       column_names <- colnames(data_set)
+
       var_no <- which(column == column_names)[1]
       data_set <- data_set[, -var_no]
     }
