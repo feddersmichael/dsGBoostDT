@@ -4,18 +4,10 @@
 \alias{data_splitDS}
 \title{Reduce the data to the last added leaves}
 \usage{
-data_splitDS(
-  data_name,
-  training_features,
-  bounds_and_levels,
-  current_tree,
-  data_classes
-)
+data_splitDS(training_data, bounds_and_levels, current_tree, data_classes)
 }
 \arguments{
-\item{data_name}{Name of the data.}
-
-\item{training_features}{All the training data per features.}
+\item{training_data}{All the training data per features.}
 
 \item{bounds_and_levels}{List of maximum and minimum value for numeric and
 levels for factor features.}

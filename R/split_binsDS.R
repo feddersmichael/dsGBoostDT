@@ -28,29 +28,15 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree, d
   training_data <- eval(parse(text = paste0(data_name, "_training")), 
                    envir = parent.frame())
   
-  training_features <- training_data[[1]]
-  training_output <- training_data[[2]]
-  data_amt <- nrow(training_features)
   amt_features <- ncol(training_features)
+  
+  
   
   # We only need to calculate the histogram-bins for the last two added leaves.
   # Therefore we reduce the data to the rows which are contained in the two
   # leaves.
-  amt_spp <- nrow(current_tree)
-  # If the tree is empty we use the whole data for the splits.
-  if (amt_spp == 0){
-    leaves <- list(training_features)
-  }
-  else if (amt_spp == 1) {
-    
-  }
-  else {
-    leaves <- data_splitDS(training_features, bounds_and_levels, current_tree)
-    for (i in 1:2){
-      data_ids <- leaves[[i]][[1]][[1]]
-      leaves[[i]][[2]] <- training_output[data_ids, ]
-    }
-  }
+  
+  leaves <- data_splitDS(training_data, bounds_and_levels, current_tree)
   
   # We also prepare our breaks to cut the data into bins
   breaks <- mapply(c, bounds_and_levels[1, ], spp_cand, bounds_and_levels[2, ], SIMPLIFY = FALSE)

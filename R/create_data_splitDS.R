@@ -17,7 +17,6 @@ create_data_splitDS <- function(data_name, data_classes, output_var,
   
   # Add data_ID column.
   nrows <- nrow(data_set)
-  data_set[[paste0(data_name, "_ID")]] <- 1:nrows
   
   # We remove the rows which contain 'NA' values in the output variable.
   data_set <- data_set[!is.na(data_set[[output_var]]), ]
