@@ -1,42 +1,89 @@
 
 #' Reduce the data to the last added leaves
 #'
+#' @param data_name Name of the data.
 #' @param training_features All the training data per features.
-#' @param min_max List of maximum and minimum value per feature.
+#' @param bounds_and_levels List of maximum and minimum value for numeric and
+#' levels for factor features.
 #' @param current_tree The currently trained tree.
+#' @param data_classes Data class for all features.
 #'
 #' @return The two last added leafs of the tree.
-data_splitDS <- function(training_features, min_max, current_tree){
+data_splitDS <- function(data_name, training_features, bounds_and_levels,
+                         current_tree, data_classes){
+  # TODO: Is data_name_ID needed?
   
-  current_split <- nrow(current_tree)
-  while (current_split != 1){
-    direction <- current_tree$par_dir[current_split]
-    par_spp <- current_tree$par_spp[current_split]
+  splits <- nrow(current_tree)
+  data_enum <- paste0(data_name, "_ID")
+  
+  if (splits == 0) {
+    output <- list(training_features)
+  }
+  else if (splits == 1) {
+    cur_feature <- current_tree$feature[1]
+    cur_spv <- current_tree$split_value[1]
     
-    cur_feature <- current_tree$Feature[par_spp]
-    cur_spv <- current_tree$split_value[par_spp]
-    
-    if (direction){
-      relev_rows <- training_features[[cur_feature]] <= cur_spv
-      training_features <- training_features[relev_rows, ]
+    if (data_classes[cur_feature] == "numeric") {
+      breaks <- c(bounds_and_levels[[cur_feature]][1], cur_spv,
+                  bounds_and_levels[[cur_feature]][2])
+      cuts <- cut(training_features[[cur_feature]], breaks)
     }
     else {
-      relev_rows <- training_features[[cur_feature]] > cur_spv
-      training_features <- training_features[relev_rows, ]
+      breaks <- c(1, cur_spv, length(bounds_and_levels[[cur_feature]]))
+      cuts <- cut(as.numeric(training_features[[cur_feature]]), breaks)
     }
     
-    current_split <- par_spp
+    data_split <- split(training_features[[data_enum]], cuts)
+    output <- list(training_features[data_split[[1]], ],
+                   training_features[data_split[[2]], ] )
+  }
+  else {
+    for (i in 1:splits-1) {
+      direction <- current_tree$par_dir[splits]
+      par_spp <- current_tree$par_spp[splits]
+      
+      cur_feature <- current_tree$feature[par_spp]
+      cur_spv <- current_tree$split_value[par_spp]
+      
+      if (direction){
+        if (data_classes[cur_feature] == "numeric") {
+          relev_rows <- training_features[[cur_feature]] <= cur_spv
+        }
+        else {
+          relev_rows <- as.numeric(training_features[[cur_feature]]) <= cur_spv
+        }
+      }
+      else {
+        if (data_classes[cur_feature] == "numeric") {
+          relev_rows <- training_features[[cur_feature]] > cur_spv
+        }
+        else {
+          relev_rows <- as.numeric(training_features[[cur_feature]]) > cur_spv
+        }
+      }
+      
+      training_features <- training_features[relev_rows, ]
+      
+      current_split <- par_spp
+    }
+    
+    cur_feature <- current_tree$feature[splits]
+    cur_spv <- current_tree$split_value[splits]
+    
+    if (data_classes[cur_feature] == "numeric") {
+      breaks <- c(bounds_and_levels[[cur_feature]][1], cur_spv,
+                  bounds_and_levels[[cur_feature]][2])
+      cuts <- cut(training_features[[cur_feature]], breaks)
+    }
+    else {
+      breaks <- c(1, cur_spv, length(bounds_and_levels[[cur_feature]]))
+      cuts <- cut(as.numeric(training_features[[cur_feature]]), breaks)
+    }
+    
+    # TODO: Can this be done? alternative 1:nrow(training_features)
+    data_split <- split(training_features, cuts)
+    output <- list(data_split[[1]], data_split[[2]])
   }
   
-  current_split <- nrow(current_tree)
-  cur_feature <- current_tree$Feature[current_split]
-  cur_spv <- current_tree$split_value[current_split]
-  
-  breaks <- c(min_max[1, cur_feature], cur_spv, min_max[2, cur_feature])
-  cuts <- cut(training_features[[cur_feature]], breaks)
-  data_split <- split(training_features[[1]], cuts)
-  
-  data_1 <- training_features[data_split[[1]], ]
-  data_2 <- training_features[data_split[[2]], ]
-  return(list(list(data_1), list(data_2)))
+  return(output)
 }

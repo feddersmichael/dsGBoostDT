@@ -2,22 +2,21 @@
 #' Split up the data into bins by slitting points.
 #'
 #' @param data_name The name of the data.
-#' @param min_max The maximum and minimum values of the features.
+#' @param bounds_and_levels List of maximum and minimum value for numeric and
+#' levels for factor features.
 #' @param spp_cand The Splitting-point candidates.
 #' @param current_tree The currently trained tree.
 #' @param data_type The type of data per feature.
 #'
 #' @return The histogram bins for each split in all features.
 #' @export
-split_binsDS <- function(data_name, min_max, spp_cand, current_tree, data_type){
+split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree, data_type){
+  
+  # TODO: Just save data which remains after each split on the server.
   
   # We first check all the inputs for appropriate class
   if (!is.character(data_name)){
     stop("'data_name' needs to have data type 'character'.")
-  }
-  
-  if (!is.list(min_max)){
-    stop("'min_max' needs to be an object of type 'list'.")
   }
 
   if (!is.list(spp_cand)){
@@ -42,8 +41,11 @@ split_binsDS <- function(data_name, min_max, spp_cand, current_tree, data_type){
   if (amt_spp == 0){
     leaves <- list(training_features)
   }
+  else if (amt_spp == 1) {
+    
+  }
   else {
-    leaves <- data_splitDS(training_features, min_max, current_tree)
+    leaves <- data_splitDS(training_features, bounds_and_levels, current_tree)
     for (i in 1:2){
       data_ids <- leaves[[i]][[1]][[1]]
       leaves[[i]][[2]] <- training_output[data_ids, ]
@@ -51,7 +53,7 @@ split_binsDS <- function(data_name, min_max, spp_cand, current_tree, data_type){
   }
   
   # We also prepare our breaks to cut the data into bins
-  breaks <- mapply(c, min_max[1, ], spp_cand, min_max[2, ], SIMPLIFY = FALSE)
+  breaks <- mapply(c, bounds_and_levels[1, ], spp_cand, bounds_and_levels[2, ], SIMPLIFY = FALSE)
   
   histograms <- list()
   

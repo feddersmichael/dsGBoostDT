@@ -4,12 +4,13 @@
 \alias{split_binsDS}
 \title{Split up the data into bins by slitting points.}
 \usage{
-split_binsDS(data_name, min_max, spp_cand, current_tree, data_type)
+split_binsDS(data_name, bounds_and_levels, spp_cand, current_tree, data_type)
 }
 \arguments{
 \item{data_name}{The name of the data.}
 
-\item{min_max}{The maximum and minimum values of the features.}
+\item{bounds_and_levels}{List of maximum and minimum value for numeric and
+levels for factor features.}
 
 \item{spp_cand}{The Splitting-point candidates.}
 
