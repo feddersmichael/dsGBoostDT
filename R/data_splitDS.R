@@ -10,7 +10,6 @@
 #' @return The two last added leafs of the tree.
 data_splitDS <- function(training_data, bounds_and_levels, current_tree,
                          data_classes){
-  # TODO: Is data_name_ID needed?
   
   splits <- nrow(current_tree)
 

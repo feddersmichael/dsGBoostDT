@@ -10,7 +10,8 @@
 #'
 #' @return The histogram bins for each split in all features.
 #' @export
-split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree, data_type){
+split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree, 
+                         data_classes, data_type){
   
   # TODO: Just save data which remains after each split on the server.
   
@@ -28,10 +29,6 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree, d
   training_data <- eval(parse(text = paste0(data_name, "_training")), 
                    envir = parent.frame())
   
-  amt_features <- ncol(training_features)
-  
-  
-  
   # We only need to calculate the histogram-bins for the last two added leaves.
   # Therefore we reduce the data to the rows which are contained in the two
   # leaves.
@@ -39,16 +36,37 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree, d
   leaves <- data_splitDS(training_data, bounds_and_levels, current_tree)
   
   # We also prepare our breaks to cut the data into bins
-  breaks <- mapply(c, bounds_and_levels[1, ], spp_cand, bounds_and_levels[2, ], SIMPLIFY = FALSE)
+  breaks <- list()
+  features <- names(bounds_and_levels)
+  for (feature in features) {
+    
+    if (data_classes[[feature]] == "numeric") {
+      breaks <- append(breaks, c(bounds_and_levels[[feature]][1],
+                                 spp_cand[[feature]],
+                                 bounds_and_levels[[feature]][2]))
+    }
+    else {
+      breaks <- append(breaks, c(1, spp_cand[[feature]],
+                                length(bounds_and_levels[[cur_feature]])))
+    }
+  }
+  # breaks <- mapply(c, bounds_and_levels[1, ], spp_cand, bounds_and_levels[2, ], SIMPLIFY = FALSE)
   
   histograms <- list()
+  amt_features <- ncol(training_features)
   
   for (leaf in leaves){
     # We start with sorting the data into bins for each feature
     # First we create the bin reference
-    split_bin_ref <- mapply(cut, as.list(leaf[[1]][, c(2:amt_features)]),
-                            breaks, MoreArgs = list(include.lowest = TRUE), 
-                            SIMPLIFY = FALSE)
+    
+    split_bin_ref <- list()
+    for (feature in features) {
+      
+      split_bin_ref[[feature]] <- cut(leaf[[feature]], breaks,
+                                      include.lowest = TRUE)
+    }
+    
+    
     # We give 'NA' values an own category
     add_NA_cat <- function(bin_vector, amt_cat){
       bin_vector[is.na(bin_vector)] <- amt_cat + 1

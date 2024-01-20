@@ -9,8 +9,6 @@
 #' @export
 calc_hist_initDS <- function(data_name, loss_function, output_var) {
   # TODO: prediction initialization -> hyper parameter optimization?
-  # TODO: maybe check if ID also needed for output
-
 
   data_set <- eval(parse(text = paste0(data_name, "_training_test_split")),
                    envir = parent.frame())

@@ -34,8 +34,6 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
   
   cont_NA <- !is.na(data_set[[output_var]])
   
-  
-  
   if (!all(cont_NA)) {
     if (drop_NA) {
       warning("The data contains 'NA' values in the output variable.")
