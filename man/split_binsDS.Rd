@@ -4,7 +4,13 @@
 \alias{split_binsDS}
 \title{Split up the data into bins by slitting points.}
 \usage{
-split_binsDS(data_name, bounds_and_levels, spp_cand, current_tree, data_type)
+split_binsDS(
+  data_name,
+  bounds_and_levels,
+  spp_cand,
+  current_tree,
+  data_classes
+)
 }
 \arguments{
 \item{data_name}{The name of the data.}
@@ -16,7 +22,7 @@ levels for factor features.}
 
 \item{current_tree}{The currently trained tree.}
 
-\item{data_type}{The type of data per feature.}
+\item{data_classes}{Data class per feature.}
 }
 \value{
 The histogram bins for each split in all features.

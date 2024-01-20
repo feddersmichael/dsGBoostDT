@@ -4,17 +4,15 @@
 #' @param data_name Name of the data.
 #' @param loss_function Type of loss function under which the tree is optimised.
 #' @param output_var The name of the column containing the output.
-#' 
+#'
 #' @return The training features and calculated output and histograms.
 #' @export
 calc_hist_initDS <- function(data_name, loss_function, output_var) {
   # TODO: prediction initialization -> hyper parameter optimization?
-  # TODO: maybe check if ID also needed for output
-
 
   data_set <- eval(parse(text = paste0(data_name, "_training_test_split")),
                    envir = parent.frame())
-  
+
   training_data <- data_set[[1]]
   data_amt <- nrow(training_data)
 
