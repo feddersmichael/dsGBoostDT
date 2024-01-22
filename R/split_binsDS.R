@@ -12,7 +12,6 @@
 #' @export
 split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
                          data_classes) {
-
   # TODO: Just save data which remains after each split on the server.
 
   # We first check all the inputs for appropriate class
@@ -37,7 +36,6 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
                          data_classes)
 
   features <- names(bounds_and_levels)
-
   # We also prepare our breaks to cut the data into bins
   breaks <- list()
   for (feature in features) {
@@ -52,9 +50,9 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
                              length(bounds_and_levels[[feature]]))
     }
   }
-
+  
   histograms <- list()
-
+  
   for (leaf in leaves){
     # We start with sorting the data into bins for each feature
     # First we create the bin reference
@@ -94,7 +92,8 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
       split_bin_hess[[feature]] <- lapply(split_bin_hess[[feature]], sum)
     }
 
-    histograms <- append(histograms, list(list(split_bin_grad, split_bin_hess)))
+    histograms <- append(histograms, list(list(grad = split_bin_grad,
+                                               hess = split_bin_hess)))
   }
 
   return(histograms)

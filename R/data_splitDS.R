@@ -35,7 +35,7 @@ data_splitDS <- function(training_data, bounds_and_levels, current_tree,
     output <- list(data_split[[1]], data_split[[2]])
   }
   else {
-    for (i in 1:splits - 1) {
+    for (i in 1:(splits - 1)) {
       direction <- current_tree$par_dir[splits]
       par_spp <- current_tree$par_spp[splits]
 
