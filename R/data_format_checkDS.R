@@ -69,7 +69,7 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
     if (!identical(data.class(data_set[[output_var]]), "numeric")) {
       stop(paste0("The loss function 'quadratic' is not suitable for this type of data."))
     }
-  } 
+  }
   else if (identical(loss_function, "binary_cross_entropy")) {
     if (!identical(data.class(data_set[[output_var]]), "numeric")
         || !identical(bounds_and_levels[[output_var]], c(0, 1))) {

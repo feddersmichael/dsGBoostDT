@@ -53,7 +53,9 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
   
   histograms <- list()
   
-  for (leaf in leaves){
+  for (i in 1:length(leaves)){
+
+    leaf <- leaves[[i]]
     # We start with sorting the data into bins for each feature
     # First we create the bin reference
 
@@ -92,8 +94,7 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
       split_bin_hess[[feature]] <- lapply(split_bin_hess[[feature]], sum)
     }
 
-    histograms <- append(histograms, list(list(grad = split_bin_grad,
-                                               hess = split_bin_hess)))
+    histograms[[i]] <- list(grad = split_bin_grad, hess = split_bin_hess)
   }
 
   return(histograms)
