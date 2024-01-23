@@ -66,22 +66,14 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
     for (feature in features) {
 
       if (data_classes[[feature]] == "numeric") {
-        if (anyNA(leaf[[feature]])) {
-          split_bin_ref[[feature]] <- addNA(cut(leaf[[feature]], breaks[[feature]],
-                                                include.lowest = TRUE))
-
-          NA_index <- length(levels(split_bin_ref[[feature]]))
-          split_bin_grad[[feature]] <- split(leaf$grad, split_bin_ref[[feature]])
-          names(split_bin_grad[[feature]])[NA_index] <- "NA"
-          split_bin_hess[[feature]] <- split(leaf$hess, split_bin_ref[[feature]])
-          names(split_bin_hess[[feature]])[NA_index] <- "NA"
-        }
-        else {
-          split_bin_ref[[feature]] <- cut(leaf[[feature]], breaks[[feature]],
-                                          include.lowest = TRUE)
-          split_bin_grad[[feature]] <- split(leaf$grad, split_bin_ref[[feature]])
-          split_bin_hess[[feature]] <- split(leaf$hess, split_bin_ref[[feature]])
-        }
+        split_bin_ref[[feature]] <- addNA(cut(leaf[[feature]],
+                                              breaks[[feature]],
+                                              include.lowest = TRUE))
+        NA_index <- length(levels(split_bin_ref[[feature]]))
+        split_bin_grad[[feature]] <- split(leaf$grad, split_bin_ref[[feature]])
+        names(split_bin_grad[[feature]])[NA_index] <- "NA"
+        split_bin_hess[[feature]] <- split(leaf$hess, split_bin_ref[[feature]])
+        names(split_bin_hess[[feature]])[NA_index] <- "NA"
       }
       else {
         split_bin_ref[[feature]] <- cut(as.numeric(leaf[[feature]]),
