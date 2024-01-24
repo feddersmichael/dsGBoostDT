@@ -20,18 +20,34 @@ data_splitDS <- function(training_data, bounds_and_levels, current_tree,
   else if (splits == 1) {
     cur_feature <- current_tree$feature[1]
     cur_spv <- current_tree$split_value[1]
+    cont_NA <- current_tree$cont_NA[1]
 
     if (data_classes[cur_feature] == "numeric") {
       breaks <- c(bounds_and_levels[[cur_feature]][1], cur_spv,
                   bounds_and_levels[[cur_feature]][2])
-      cuts <- cut(training_data[[cur_feature]], breaks)
+      cuts <- cut(training_data[[cur_feature]], breaks, include.lowest = TRUE)
     }
     else {
       breaks <- c(1, cur_spv, length(bounds_and_levels[[cur_feature]]))
-      cuts <- cut(as.numeric(training_data[[cur_feature]]), breaks)
+      cuts <- cut(as.numeric(training_data[[cur_feature]]), breaks,
+                  include.lowest = TRUE)
     }
 
+    if (cont_NA != 0) {
+      cuts <- addNA(cuts)
+    }
+    
     data_split <- split(training_data, cuts)
+    
+    if (cont_NA == 1) {
+      data_split[[1]] <- rbind(data_split[[1]], data_split[[3]])
+      data_split[[3]] <- NULL
+    }
+    else if (cont_NA == 2) {
+      data_split[[2]] <- rbind(data_split[[2]], data_split[[3]])
+      data_split[[3]] <- NULL
+    }
+    
     output <- list(data_split[[1]], data_split[[2]])
   }
   else {
@@ -41,10 +57,17 @@ data_splitDS <- function(training_data, bounds_and_levels, current_tree,
 
       cur_feature <- current_tree$feature[par_spp]
       cur_spv <- current_tree$split_value[par_spp]
+      cont_NA <- current_tree$cont_NA[1]
 
       if (direction) {
         if (data_classes[cur_feature] == "numeric") {
-          relev_rows <- training_data[[cur_feature]] <= cur_spv
+          if (cont_NA == 1) {
+            relev_rows <- (training_data[[cur_feature]] <= cur_spv | 
+                             is.na(training_data[[cur_feature]]))
+          }
+          else {
+            relev_rows <- training_data[[cur_feature]] <= cur_spv
+          }
         }
         else {
           relev_rows <- as.numeric(training_data[[cur_feature]]) <= cur_spv
@@ -52,7 +75,13 @@ data_splitDS <- function(training_data, bounds_and_levels, current_tree,
       }
       else {
         if (data_classes[cur_feature] == "numeric") {
-          relev_rows <- training_data[[cur_feature]] > cur_spv
+          if (cont_NA == 2) {
+            relev_rows <- (training_data[[cur_feature]] > cur_spv | 
+                             is.na(training_data[[cur_feature]]))
+          }
+          else {
+            relev_rows <- training_data[[cur_feature]] > cur_spv
+          }
         }
         else {
           relev_rows <- as.numeric(training_data[[cur_feature]]) > cur_spv
@@ -70,15 +99,29 @@ data_splitDS <- function(training_data, bounds_and_levels, current_tree,
     if (data_classes[cur_feature] == "numeric") {
       breaks <- c(bounds_and_levels[[cur_feature]][1], cur_spv,
                   bounds_and_levels[[cur_feature]][2])
-      cuts <- cut(training_data[[cur_feature]], breaks)
+      cuts <- cut(training_data[[cur_feature]], breaks, include.lowest = TRUE)
     }
     else {
       breaks <- c(1, cur_spv, length(bounds_and_levels[[cur_feature]]))
-      cuts <- cut(as.numeric(training_data[[cur_feature]]), breaks)
+      cuts <- cut(as.numeric(training_data[[cur_feature]]), breaks,
+                  include.lowest = TRUE)
+    }
+    
+    if (cont_NA != 0) {
+      cuts <- addNA(cuts)
+    }
+    
+    data_split <- split(training_data, cuts)
+    
+    if (cont_NA == 1) {
+      data_split[[1]] <- rbind(data_split[[1]], data_split[[3]])
+      data_split[[3]] <- NULL
+    }
+    else if (cont_NA == 2) {
+      data_split[[2]] <- rbind(data_split[[2]], data_split[[3]])
+      data_split[[3]] <- NULL
     }
 
-    # TODO: Can this be done? alternative 1:nrow(training_data)
-    data_split <- split(training_data, cuts)
     output <- list(data_split[[1]], data_split[[2]])
   }
 
