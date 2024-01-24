@@ -24,11 +24,12 @@ data_splitDS <- function(training_data, bounds_and_levels, current_tree,
     if (data_classes[cur_feature] == "numeric") {
       breaks <- c(bounds_and_levels[[cur_feature]][1], cur_spv,
                   bounds_and_levels[[cur_feature]][2])
-      cuts <- cut(training_data[[cur_feature]], breaks)
+      cuts <- cut(training_data[[cur_feature]], breaks, include.lowest = TRUE)
     }
     else {
       breaks <- c(1, cur_spv, length(bounds_and_levels[[cur_feature]]))
-      cuts <- cut(as.numeric(training_data[[cur_feature]]), breaks)
+      cuts <- cut(as.numeric(training_data[[cur_feature]]), breaks,
+                  include.lowest = TRUE)
     }
 
     data_split <- split(training_data, cuts)
@@ -70,11 +71,12 @@ data_splitDS <- function(training_data, bounds_and_levels, current_tree,
     if (data_classes[cur_feature] == "numeric") {
       breaks <- c(bounds_and_levels[[cur_feature]][1], cur_spv,
                   bounds_and_levels[[cur_feature]][2])
-      cuts <- cut(training_data[[cur_feature]], breaks)
+      cuts <- cut(training_data[[cur_feature]], breaks, include.lowest = TRUE)
     }
     else {
       breaks <- c(1, cur_spv, length(bounds_and_levels[[cur_feature]]))
-      cuts <- cut(as.numeric(training_data[[cur_feature]]), breaks)
+      cuts <- cut(as.numeric(training_data[[cur_feature]]), breaks,
+                  include.lowest = TRUE)
     }
 
     # TODO: Can this be done? alternative 1:nrow(training_data)
