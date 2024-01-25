@@ -51,13 +51,16 @@ data_splitDS <- function(training_data, bounds_and_levels, current_tree,
     output <- list(data_split[[1]], data_split[[2]])
   }
   else {
-    for (i in 1:(splits - 1)) {
-      direction <- current_tree$par_dir[splits]
-      par_spp <- current_tree$par_spp[splits]
+    
+    current_split <- splits
+    
+    while (current_split != 1) {
+      direction <- current_tree$par_dir[current_split]
+      par_spp <- current_tree$par_spp[current_split]
 
       cur_feature <- current_tree$feature[par_spp]
       cur_spv <- current_tree$split_value[par_spp]
-      cont_NA <- current_tree$cont_NA[1]
+      cont_NA <- current_tree$cont_NA[par_spp]
 
       if (direction) {
         if (data_classes[cur_feature] == "numeric") {
@@ -95,6 +98,7 @@ data_splitDS <- function(training_data, bounds_and_levels, current_tree,
 
     cur_feature <- current_tree$feature[splits]
     cur_spv <- current_tree$split_value[splits]
+    cont_NA <- current_tree$cont_NA[splits]
 
     if (data_classes[cur_feature] == "numeric") {
       breaks <- c(bounds_and_levels[[cur_feature]][1], cur_spv,
