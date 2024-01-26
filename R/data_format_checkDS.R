@@ -12,7 +12,7 @@
 #' @return The data classes for all columns.
 #' @export
 data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
-                                loss_function, drop_NA) {
+                                loss_function, drop_columns, drop_NA) {
   #TODO: Possibility to overwrite levels for factors.
 
   if (!exists(data_name)) {
@@ -20,16 +20,27 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
   }
 
   data_set <- eval(parse(text = data_name), envir = parent.frame())
-
-
+  
   if (!is.data.frame(data_set)) {
     stop(paste0("The object saved under the name '", data_name, "' has data type '",
                 class(data_set), "' instead of 'data frame'."))
   }
-
+  
+  column_names <- colnames(data_set)
+  
+  # We remove the 'drop_columns' features from the data
+  if (!is.null(drop_columns)) {
+    if (!all(drop_columns %in% column_names)) {
+      stop("The columns which shall be removed don't exist.")
+    }
+    else {
+      data_set <- data_set[, -which(column_names %in% drop_columns)]
+    }
+  }
+  
   exp_columns <- names(bounds_and_levels)
   if (!identical(exp_columns, colnames(data_set))) {
-    stop("The column names of the data set don't coincide with the expected names.")
+    stop("The remaining column names of the data set don't coincide with the expected names.")
   }
 
   cont_NA <- !is.na(data_set[[output_var]])
