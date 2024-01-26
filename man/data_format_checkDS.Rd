@@ -9,6 +9,7 @@ data_format_checkDS(
   bounds_and_levels,
   output_var,
   loss_function,
+  drop_columns,
   drop_NA
 )
 }
@@ -22,6 +23,8 @@ level sets for all variables.}
 
 \item{loss_function}{The loss function which we use to optimize our boosted
 tree.}
+
+\item{drop_columns}{Which columns should be dropped from the data.}
 
 \item{drop_NA}{If NA-values should be deleted.}
 }

@@ -4,18 +4,10 @@
 \alias{create_data_splitDS}
 \title{Separate Training and Test data}
 \usage{
-create_data_splitDS(
-  data_name,
-  data_classes,
-  output_var,
-  drop_columns,
-  train_test_ratio
-)
+create_data_splitDS(data_name, output_var, drop_columns, train_test_ratio)
 }
 \arguments{
 \item{data_name}{Name of the data.}
-
-\item{data_classes}{List of data class for all columns.}
 
 \item{output_var}{The name of the column containing the output.}
 

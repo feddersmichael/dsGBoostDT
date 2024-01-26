@@ -2,28 +2,29 @@
 #' Separate Training and Test data
 #'
 #' @param data_name Name of the data.
-#' @param data_classes List of data class for all columns.
 #' @param output_var The name of the column containing the output.
 #' @param drop_columns Which columns should be removed from the data.
 #' @param train_test_ratio Ratio of training data of the whole data.
 #'
 #' @return The training-test split.
 #' @export
-create_data_splitDS <- function(data_name, data_classes, output_var,
-                                drop_columns, train_test_ratio) {
+create_data_splitDS <- function(data_name, output_var, drop_columns,
+                                train_test_ratio) {
 
   data_set <- eval(parse(text = data_name), envir = parent.frame())
 
   # We remove the rows which contain 'NA' values in the output variable.
   data_set <- data_set[!is.na(data_set[[output_var]]), ]
 
+  column_names <- colnames(data_set)
+
   # Remove columns which aren't needed.
   if (!is.null(drop_columns)) {
-    for (column in drop_columns) {
-      column_names <- colnames(data_set)
-
-      var_no <- which(column == column_names)[1]
-      data_set <- data_set[, -var_no]
+    if (!all(drop_columns %in% column_names)) {
+      stop("The columns which shall be removed don't exist.")
+    }
+    else {
+      data_set <- data_set[, -which(column_names %in% drop_columns)]
     }
   }
 

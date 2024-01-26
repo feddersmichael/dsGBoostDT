@@ -7,12 +7,13 @@
 #' @param output_var The name of the output variable.
 #' @param loss_function The loss function which we use to optimize our boosted
 #' tree.
+#' @param drop_columns Which columns should be dropped from the data.
 #' @param drop_NA If NA-values should be deleted.
 #'
 #' @return The data classes for all columns.
 #' @export
 data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
-                                loss_function, drop_NA) {
+                                loss_function, drop_columns, drop_NA) {
   #TODO: Possibility to overwrite levels for factors.
 
   if (!exists(data_name)) {
@@ -20,24 +21,33 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
   }
 
   data_set <- eval(parse(text = data_name), envir = parent.frame())
-
-
+  
   if (!is.data.frame(data_set)) {
     stop(paste0("The object saved under the name '", data_name, "' has data type '",
                 class(data_set), "' instead of 'data frame'."))
   }
-
+  
+  column_names <- colnames(data_set)
+  
+  # We remove the 'drop_columns' features from the data
+  if (!is.null(drop_columns)) {
+    if (!all(drop_columns %in% column_names)) {
+      stop("The columns which shall be removed don't exist.")
+    }
+    else {
+      data_set <- data_set[, -which(column_names %in% drop_columns)]
+    }
+  }
+  
   exp_columns <- names(bounds_and_levels)
   if (!identical(exp_columns, colnames(data_set))) {
-    stop("The column names of the data set don't coincide with the expected names.")
+    stop("The remaining column names of the data set don't coincide with the expected names.")
   }
 
-  cont_NA <- !is.na(data_set[[output_var]])
+  cont_NA <- is.na(data_set[[output_var]])
 
-  if (!all(cont_NA)) {
-    if (drop_NA) {
-      warning("The data contains 'NA' values in the output variable.")
-    } else {
+  if (any(cont_NA)) {
+    if (!drop_NA) {
       stop("The data contains 'NA' values in the output variable.")
     }
   }
@@ -66,16 +76,16 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
   }
 
   if (identical(loss_function, "quadratic")) {
-    if (!identical(data.class(data_set[[output_var]]), "numeric")) {
+    if (!identical(data_classes[[output_var]], "numeric")) {
       stop(paste0("The loss function 'quadratic' is not suitable for this type of data."))
     }
   }
   else if (identical(loss_function, "binary_cross_entropy")) {
-    if (!identical(data.class(data_set[[output_var]]), "numeric")
+    if (!identical(data_classes[[output_var]], "numeric")
         || !identical(bounds_and_levels[[output_var]], c(0, 1))) {
       stop(paste0("The loss function 'binary_cross_entropy' is not suitable for this type of data."))
     }
   }
-
+  
   return(data_classes)
 }
