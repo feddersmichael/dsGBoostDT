@@ -14,15 +14,6 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
                          data_classes) {
   # TODO: Just save data which remains after each split on the server.
 
-  # We first check all the inputs for appropriate class
-  if (!is.character(data_name)) {
-    stop("'data_name' needs to have data type 'character'.")
-  }
-
-  if (!is.list(spp_cand)) {
-    stop("'spp_cand' needs to be an object of type 'list'.")
-  }
-
   # We read in the data from the server and extract the features, output and
   # predicted output from the training data
   training_data <- eval(parse(text = paste0(data_name, "_training")),
@@ -39,7 +30,6 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
   # We also prepare our breaks to cut the data into bins
   breaks <- list()
   for (feature in features) {
-
     if (data_classes[[feature]] == "numeric") {
       breaks[[feature]] <- c(bounds_and_levels[[feature]][1],
                              spp_cand[[feature]],
@@ -52,7 +42,6 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
   }
   
   histograms <- list()
-  
   for (i in 1:length(leaves)){
 
     leaf <- leaves[[i]]
