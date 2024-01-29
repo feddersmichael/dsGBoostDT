@@ -16,9 +16,8 @@ create_data_splitDS <- function(data_name, output_var, drop_columns,
   # We remove the rows which contain 'NA' values in the output variable.
   data_set <- data_set[!is.na(data_set[[output_var]]), ]
 
-  column_names <- colnames(data_set)
-
   # Remove columns which aren't needed.
+  column_names <- colnames(data_set)
   if (!is.null(drop_columns)) {
     if (!all(drop_columns %in% column_names)) {
       stop("The columns which shall be removed don't exist.")

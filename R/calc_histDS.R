@@ -3,19 +3,22 @@
 #'
 #' @param data_name Name of the data.
 #' @param last_tr_tree The last tree which was trained.
+#' @param data_classes Data class for all features.
+#' @param output_var The name of the column containing the output.
 #' @param loss_function The type of loss-function under which we optimizes our
 #' boosted tree.
-#'
+#' 
 #' @return The training features and calculated output and histograms.
 #' @export
-calc_histDS <- function(data_name, last_tr_tree, loss_function){
+calc_histDS <- function(data_name, last_tr_tree, data_classes, output_var,
+                        loss_function) {
   
   # We first check all the inputs for appropriate class
-  if (!is.character(data_name)){
+  if (!is.character(data_name)) {
     stop("'data_name' needs to have data type 'character'.")
   }
   
-  if (!is.data.frame(last_tr_tree)){
+  if (!is.data.frame(last_tr_tree)) {
     stop("'last_tr_tree' needs to be an object of type 'data frame'.")
   }
   
@@ -24,21 +27,24 @@ calc_histDS <- function(data_name, last_tr_tree, loss_function){
   training_data <- eval(parse(text = paste0(data_name, "_training")), 
                    envir = parent.frame())
   
-  training_data[[2]]$pred <- training_data[[2]]$pred +
-                             apply(X = training_data[[1]], MARGIN = 1, 
-                                     FUN = tree_evaluationDS, last_tr_tree)
+  data_by_row <- split(training_data, seq(nrow(training_data)))
   
-  if (loss_function == "quadratic"){
-    training_data[[2]]$grad <- -2 * (training_data[[2]][[1]] - 
-                                       training_data[[2]]$pred)
+  training_data$pred <- sapply(X = data_by_row, FUN = tree_evaluationDS,
+                               last_tr_tree, data_classes) +
+                               training_data$pred
+  
+  output <- training_data[[output_var]]
+  
+  if (loss_function == "quadratic") {
+    training_data$grad <- -2 * (output - training_data$pred)
   }
-  else if (loss_function == "binary_cross_entropy"){
-    output <- training_data[[1]]
-    prediction <- training_data[[2]]$pred
+  else if (loss_function == "binary_cross_entropy") {
+    prediction <- training_data$pred
     pred_1 <- prediction - 1
-    training_data[[2]]$grad <- (output - prediction) / 
-      (pred_1 * prediction)
-    training_data[[2]]$hess <- output / prediction^2 - (output - 1) / pred_1^2
+    val_per_pred <- output / prediction
+    va_1_per_pred_1 <- (output - 1) / pred_1
+    training_data$grad <- va_1_per_pred_1 - val_per_pred
+    training_data$hess <- val_per_pred / prediction - va_1_per_pred_1 / pred_1
   }
   
   return(training_data)

@@ -14,7 +14,6 @@
 #' @export
 data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
                                 loss_function, drop_columns, drop_NA) {
-  #TODO: Possibility to overwrite levels for factors.
 
   if (!exists(data_name)) {
     stop(paste0("There exists no data saved under the name '", data_name, "'."))
@@ -50,24 +49,38 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
     if (!drop_NA) {
       stop("The data contains 'NA' values in the output variable.")
     }
+    else {
+      data_set <- data_set[!cont_NA, ]
+    }
   }
 
   data_classes <- sapply(data_set, data.class)
 
-  for (i in 1:length(exp_columns)) {
-    if (data_classes[[i]] == "numeric") {
-      if (min(data_set[[i]], na.rm = TRUE) < bounds_and_levels[[i]][1]) {
-        stop(paste0("The values in the column '", exp_columns[i], "' aren't restricted to the expected boundaries."))
+  for (column in exp_columns) {
+    if (data_classes[[column]] == "numeric") {
+      
+      if(!is.numeric(bounds_and_levels[[column]]) ||
+         length(bounds_and_levels[[column]]) != 2 ||
+         (bounds_and_levels[[column]][[1]] > bounds_and_levels[[column]][[2]])) {
+        stop("For numeric features 'bounds_and_levels' should be a numeric vector of length 2 with a lower and upper limit for all elements in this column.")
+      }
+      
+      if (min(data_set[[column]], na.rm = TRUE) < bounds_and_levels[[column]][1]) {
+        stop(paste0("The values in the column '", column, "' aren't restricted to the expected boundaries."))
       }
 
-      if (max(data_set[[i]], na.rm = TRUE) > bounds_and_levels[[i]][2]) {
-        stop(paste0("The values in the column '", exp_columns[i], "' aren't restricted to the expected boundaries."))
+      if (max(data_set[[column]], na.rm = TRUE) > bounds_and_levels[[column]][2]) {
+        stop(paste0("The values in the column '", column, "' aren't restricted to the expected boundaries."))
       }
     }
-    else if (data_classes[[i]] == "factor") {
+    else if (data_classes[[column]] == "factor") {
+      
+      if (!is.character(bounds_and_levels[[column]])) {
+        stop("For factor features 'bounds_and_levels' should be a character vector which provides the expected levels.")
+      }
 
-      if (!identical(bounds_and_levels[[i]], levels(data_set[[i]]))) {
-        stop(paste0("The levels of the column '", exp_columns[i], "' don't coincide with the expected amount or order."))
+      if (!identical(bounds_and_levels[[column]], levels(data_set[[column]]))) {
+        stop(paste0("The levels of the column '", column, "' don't coincide with the expected amount or order."))
       }
     }
     else {

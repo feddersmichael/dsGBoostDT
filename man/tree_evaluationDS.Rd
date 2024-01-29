@@ -4,12 +4,14 @@
 \alias{tree_evaluationDS}
 \title{Evaluate an output of a data-point under a tree.}
 \usage{
-tree_evaluationDS(data_point, tree)
+tree_evaluationDS(data_point, tree, data_classes)
 }
 \arguments{
 \item{data_point}{The data-point to be evaluated.}
 
 \item{tree}{The tree which maps the data.}
+
+\item{data_classes}{Data class for all features.}
 }
 \value{
 The output under the tree.

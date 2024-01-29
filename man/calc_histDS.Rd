@@ -4,12 +4,16 @@
 \alias{calc_histDS}
 \title{Calculate the histograms.}
 \usage{
-calc_histDS(data_name, last_tr_tree, loss_function)
+calc_histDS(data_name, last_tr_tree, data_classes, output_var, loss_function)
 }
 \arguments{
 \item{data_name}{Name of the data.}
 
 \item{last_tr_tree}{The last tree which was trained.}
+
+\item{data_classes}{Data class for all features.}
+
+\item{output_var}{The name of the column containing the output.}
 
 \item{loss_function}{The type of loss-function under which we optimizes our
 boosted tree.}
