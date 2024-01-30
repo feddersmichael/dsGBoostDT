@@ -46,6 +46,13 @@ calc_histDS <- function(data_name, last_tr_tree, data_classes, output_var,
     training_data$grad <- va_1_per_pred_1 - val_per_pred
     training_data$hess <- val_per_pred / prediction - va_1_per_pred_1 / pred_1
   }
+  else if (loss_function == "binary_sigmoid") {
+    exp_z <- exp(training_data$pred)
+    one_pl_exp_z <- exp_z + 1
+    exp_relation <- exp_z / one_pl_exp_z
+    training_data$grad <- exp_relation - output
+    training_data$hess <- exp_relation / one_pl_exp_z
+  }
   
   return(training_data)
 }

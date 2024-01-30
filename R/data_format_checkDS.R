@@ -99,6 +99,11 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
       stop(paste0("The loss function 'binary_cross_entropy' is not suitable for this type of data."))
     }
   }
+  else if (identical(loss_function, "binary_sigmoid")) {
+    if (!identical(data_classes[[output_var]], "numeric")) {
+      stop(paste0("The loss function 'binary_sigmoid' is not suitable for this type of data."))
+    }
+  }
   
   return(data_classes)
 }
