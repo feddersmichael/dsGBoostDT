@@ -21,8 +21,7 @@ create_data_splitDS <- function(data_name, output_var, drop_columns,
   if (!is.null(drop_columns)) {
     if (!all(drop_columns %in% column_names)) {
       stop("The columns which shall be removed don't exist.")
-    }
-    else {
+    } else {
       data_set <- data_set[, -which(column_names %in% drop_columns)]
     }
   }

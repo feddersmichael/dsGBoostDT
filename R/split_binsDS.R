@@ -34,15 +34,14 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
       breaks[[feature]] <- c(bounds_and_levels[[feature]][1],
                              spp_cand[[feature]],
                              bounds_and_levels[[feature]][2])
-    }
-    else {
+    } else {
       breaks[[feature]] <- c(1, spp_cand[[feature]],
                              length(bounds_and_levels[[feature]]))
     }
   }
-  
+
   histograms <- list()
-  for (i in 1:length(leaves)){
+  for (i in seq_along(leaves)){
 
     leaf <- leaves[[i]]
     # We start with sorting the data into bins for each feature
@@ -63,8 +62,7 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
         names(split_bin_grad[[feature]])[NA_index] <- "NA"
         split_bin_hess[[feature]] <- split(leaf$hess, split_bin_ref[[feature]])
         names(split_bin_hess[[feature]])[NA_index] <- "NA"
-      }
-      else {
+      } else {
         split_bin_ref[[feature]] <- cut(as.numeric(leaf[[feature]]),
                                         breaks[[feature]], include.lowest = TRUE)
         split_bin_grad[[feature]] <- split(leaf$grad, split_bin_ref[[feature]])
