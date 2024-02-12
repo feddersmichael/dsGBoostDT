@@ -73,7 +73,7 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
       split_bin_hess[[feature]] <- lapply(split_bin_hess[[feature]], sum)
     }
 
-    histograms[[i]] <- list(grad = split_bin_grad, hess = split_bin_hess)
+    histograms[[i]] <- list(grad = split_bin_grad, hess = split_bin_hess,)
   }
 
   return(histograms)

@@ -15,7 +15,7 @@
 data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
                                 loss_function, drop_columns, drop_NA) {
 
-  if (!exists(data_name)) {
+  if (!exists(data_name, envir = parent.frame())) {
     stop(paste0("There exists no data saved under the name '", data_name, "'."))
   }
 
@@ -39,7 +39,7 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
   }
 
   exp_columns <- names(bounds_and_levels)
-  if (!identical(exp_columns, colnames(data_set))) {
+  if (!identical(sort(exp_columns), sort(colnames(data_set)))) {
     stop("The remaining column names of the data set don't coincide with the expected names.")
   }
 
@@ -91,11 +91,12 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
     }
   } else if (identical(loss_function, "binary_cross_entropy")) {
     if (!identical(data_classes[[output_var]], "numeric")
-        || !identical(bounds_and_levels[[output_var]], c(0, 1))) {
+        || !all(bounds_and_levels[[output_var]] %in% c(0, 1))) {
       stop(paste0("The loss function 'binary_cross_entropy' is not suitable for this type of data."))
     }
   } else if (identical(loss_function, "binary_sigmoid")) {
-    if (!identical(data_classes[[output_var]], "numeric")) {
+    if (!identical(data_classes[[output_var]], "numeric")
+        || !all(bounds_and_levels[[output_var]] %in% c(0, 1))) {
       stop(paste0("The loss function 'binary_sigmoid' is not suitable for this type of data."))
     }
   }
