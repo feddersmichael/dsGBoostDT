@@ -40,15 +40,9 @@ calc_histDS <- function(data_name, last_tr_tree, data_classes, output_var,
     training_data$loss <- difference^2
     training_data$grad <- -2 * difference
   } else if (loss_function == "binary_cross_entropy") {
-    outp_zero <- output == 0
-    outp_one <- output == 1
-    loss_zero <- log(-(training_data$pred[outp_zero] - 1))
-    loss_one <- log(training_data$pred[outp_one])
-    training_data$loss <- rep(0, data_amt)
-    training_data$loss[outp_zero] <- loss_zero
-    training_data$loss[outp_one] <- loss_one
-    
     pred_1 <- prediction - 1
+    log_pred <- log(-1 * pred_1)
+    training_data$loss <-  output * (log_pred - log(prediction)) - log_pred
     val_per_pred <- output / prediction
     va_1_per_pred_1 <- (output - 1) / pred_1
     training_data$grad <- va_1_per_pred_1 - val_per_pred
@@ -59,9 +53,9 @@ calc_histDS <- function(data_name, last_tr_tree, data_classes, output_var,
     prediction[prediction > 6] <- 6
     prediction[prediction < -6] <- -6
     
-    
     exp_z <- exp(prediction)
     one_pl_exp_z <- exp_z + 1
+    training_data$loss <- log(one_pl_exp_z) - prediction / (output - 1)
     exp_relation <- exp_z / one_pl_exp_z
     training_data$grad <- exp_relation - output
     training_data$hess <- exp_relation / one_pl_exp_z
