@@ -35,7 +35,7 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
                              spp_cand[[feature]],
                              bounds_and_levels[[feature]][2])
     } else {
-      breaks[[feature]] <- c(1, spp_cand[[feature]],
+      breaks[[feature]] <- c(1, spp_cand[[feature]][["spp_cand"]],
                              length(bounds_and_levels[[feature]]))
     }
   }
@@ -63,6 +63,12 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
         split_bin_hess[[feature]] <- split(leaf$hess, split_bin_ref[[feature]])
         names(split_bin_hess[[feature]])[NA_index] <- "NA"
       } else {
+        gradient <- list()
+        hessian <- list()
+        pivot_points <- spp_cand[[feature]][["pivot_points"]]
+        for (j in length(pivot_points)) {
+          
+        }
         split_bin_ref[[feature]] <- cut(as.numeric(leaf[[feature]]),
                                         breaks[[feature]], include.lowest = TRUE)
         split_bin_grad[[feature]] <- split(leaf$grad, split_bin_ref[[feature]])
