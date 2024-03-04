@@ -69,6 +69,7 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
         for (j in length(pivot_points)) {
           
         }
+        
         split_bin_ref[[feature]] <- cut(as.numeric(leaf[[feature]]),
                                         breaks[[feature]], include.lowest = TRUE)
         split_bin_grad[[feature]] <- split(leaf$grad, split_bin_ref[[feature]])
