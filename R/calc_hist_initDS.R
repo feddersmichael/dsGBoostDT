@@ -17,22 +17,36 @@ calc_hist_initDS <- function(data_name, output_var, loss_function) {
   training_data <- data_set[[1]]
   data_amt <- nrow(training_data)
 
-  if (loss_function == "quadratic") {
-    training_data$pred <- rep(0, data_amt)
-    training_data$loss <- training_data[[output_var]]^2
-    training_data$grad <- -2 * training_data[[output_var]]
-    training_data$hess <- rep(2, data_amt)
-  } else if (loss_function == "binary_cross_entropy") {
-    training_data$pred <- rep(0.5, data_amt)
-    training_data$loss <- rep(-log(0.5), data_amt)
-    training_data$grad <- -4 * training_data[[output_var]] + 2
-    training_data$hess <- rep(4, data_amt)
-  } else if (loss_function == "binary_sigmoid") {
-    training_data$pred <- rep(0, data_amt)
-    training_data$loss <- rep(log(2), data_amt)
-    training_data$grad <- -1 * training_data[[output_var]] + 0.5
-    training_data$hess <- rep(0.25, data_amt)
+  if (weight_update == "hessian") {
+    if (loss_function == "quadratic") {
+      training_data$pred <- rep(0, data_amt)
+      training_data$loss <- training_data[[output_var]]^2
+      training_data$grad <- -2 * training_data[[output_var]]
+      training_data$hess <- rep(2, data_amt)
+    } else if (loss_function == "binary_cross_entropy") {
+      training_data$pred <- rep(0.5, data_amt)
+      training_data$loss <- rep(-log(0.5), data_amt)
+      training_data$grad <- -4 * training_data[[output_var]] + 2
+      training_data$hess <- rep(4, data_amt)
+    } else if (loss_function == "binary_sigmoid") {
+      training_data$pred <- rep(0, data_amt)
+      training_data$loss <- rep(log(2), data_amt)
+      training_data$grad <- -1 * training_data[[output_var]] + 0.5
+      training_data$hess <- rep(0.25, data_amt)
+    }
+  } else if (weight_update == "average") {
+    if (loss_function == "quadratic") {
+      training_data$pred <- rep(0, data_amt)
+      training_data$loss <- training_data[[output_var]]^2
+    } else if (loss_function == "binary_cross_entropy") {
+      training_data$pred <- rep(0.5, data_amt)
+      training_data$loss <- rep(-log(0.5), data_amt)
+    } else if (loss_function == "binary_sigmoid") {
+      training_data$pred <- rep(0, data_amt)
+      training_data$loss <- rep(log(2), data_amt)
+    }
   }
+  
 
   return(training_data)
 }

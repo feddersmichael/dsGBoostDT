@@ -28,38 +28,73 @@ calc_histDS <- function(data_name, last_tr_tree, data_classes, output_var,
                         envir = parent.frame())
 
   data_by_row <- split(training_data, seq_len(nrow(training_data)))
+  
+  new_pred <- sapply(X = data_by_row, FUN = tree_evaluationDS, last_tr_tree,
+                     data_classes)
 
-  training_data$pred <- sapply(X = data_by_row, FUN = tree_evaluationDS,
-                               last_tr_tree, data_classes) + training_data$pred
-
-  output <- training_data[[output_var]]
-  prediction <- training_data$pred
-
-  if (loss_function == "quadratic") {
-    difference <- output - prediction
-    training_data$loss <- difference^2
-    training_data$grad <- -2 * difference
-  } else if (loss_function == "binary_cross_entropy") {
-    pred_1 <- prediction - 1
-    log_pred <- log(-1 * pred_1)
-    training_data$loss <-  output * (log_pred - log(prediction)) - log_pred
-    val_per_pred <- output / prediction
-    va_1_per_pred_1 <- (output - 1) / pred_1
-    training_data$grad <- va_1_per_pred_1 - val_per_pred
-    training_data$hess <- val_per_pred / prediction - va_1_per_pred_1 / pred_1
-  } else if (loss_function == "binary_sigmoid") {
-    # If we happen to get absolute prediction values over 6 we cut it off at
-    # that value to prevent overflow
-    prediction[prediction > 6] <- 6
-    prediction[prediction < -6] <- -6
+  if (weight_update == "hessian") {
     
-    exp_z <- exp(prediction)
-    one_pl_exp_z <- exp_z + 1
-    training_data$loss <- log(one_pl_exp_z) - prediction / (output - 1)
-    exp_relation <- exp_z / one_pl_exp_z
-    training_data$grad <- exp_relation - output
-    training_data$hess <- exp_relation / one_pl_exp_z
+    training_data$pred <- new_pred + training_data$pred
+    output <- training_data[[output_var]]
+    prediction <- training_data$pred
+    if (loss_function == "quadratic") {
+      difference <- output - prediction
+      training_data$loss <- difference^2
+      training_data$grad <- -2 * difference
+    } else if (loss_function == "binary_cross_entropy") {
+      pred_1 <- prediction - 1
+      log_pred <- log(-1 * pred_1)
+      training_data$loss <-  output * (log_pred - log(prediction)) - log_pred
+      val_per_pred <- output / prediction
+      va_1_per_pred_1 <- (output - 1) / pred_1
+      training_data$grad <- va_1_per_pred_1 - val_per_pred
+      training_data$hess <- val_per_pred / prediction - va_1_per_pred_1 / pred_1
+    } else if (loss_function == "binary_sigmoid") {
+      # If we happen to get absolute prediction values over 6 we cut it off at
+      # that value to prevent overflow
+      prediction[prediction > 6] <- 6
+      prediction[prediction < -6] <- -6
+      
+      exp_z <- exp(prediction)
+      one_pl_exp_z <- exp_z + 1
+      training_data$loss <- log(one_pl_exp_z) - prediction / (output - 1)
+      exp_relation <- exp_z / one_pl_exp_z
+      training_data$grad <- exp_relation - output
+      training_data$hess <- exp_relation / one_pl_exp_z
+    }
+  } else if (weight_apdate == "average") {
+    
+    training_data$pred <- (new_pred + training_data$pred * (amt_trees - 1)) /
+      amt_trees
+    output <- training_data[[output_var]]
+    prediction <- training_data$pred
+    if (loss_function == "quadratic") {
+      difference <- output - prediction
+      training_data$loss <- difference^2
+      training_data$grad <- -2 * difference
+    } else if (loss_function == "binary_cross_entropy") {
+      pred_1 <- prediction - 1
+      log_pred <- log(-1 * pred_1)
+      training_data$loss <-  output * (log_pred - log(prediction)) - log_pred
+      val_per_pred <- output / prediction
+      va_1_per_pred_1 <- (output - 1) / pred_1
+      training_data$grad <- va_1_per_pred_1 - val_per_pred
+      training_data$hess <- val_per_pred / prediction - va_1_per_pred_1 / pred_1
+    } else if (loss_function == "binary_sigmoid") {
+      # If we happen to get absolute prediction values over 6 we cut it off at
+      # that value to prevent overflow
+      prediction[prediction > 6] <- 6
+      prediction[prediction < -6] <- -6
+      
+      exp_z <- exp(prediction)
+      one_pl_exp_z <- exp_z + 1
+      training_data$loss <- log(one_pl_exp_z) - prediction / (output - 1)
+      exp_relation <- exp_z / one_pl_exp_z
+      training_data$grad <- exp_relation - output
+      training_data$hess <- exp_relation / one_pl_exp_z
+    }
   }
+  
 
   return(training_data)
 }

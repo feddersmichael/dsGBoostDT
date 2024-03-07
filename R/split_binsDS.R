@@ -24,7 +24,7 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
   # leaves.
 
   leaves <- data_splitDS(training_data, bounds_and_levels, current_tree,
-                         data_classes)
+                         data_classes, "leaf", nrow(current_tree))
 
   features <- names(bounds_and_levels)
   # We also prepare our breaks to cut the data into bins
