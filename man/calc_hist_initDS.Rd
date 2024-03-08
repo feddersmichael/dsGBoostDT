@@ -4,10 +4,12 @@
 \alias{calc_hist_initDS}
 \title{Calculate the predicted output and histograms}
 \usage{
-calc_hist_initDS(data_name, output_var, loss_function)
+calc_hist_initDS(data_name, weight_update, output_var, loss_function)
 }
 \arguments{
 \item{data_name}{Name of the data.}
+
+\item{weight_update}{Through which method we choose the weights for our tree.}
 
 \item{output_var}{The name of the column containing the output.}
 

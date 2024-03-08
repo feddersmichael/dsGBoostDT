@@ -4,10 +4,20 @@
 \alias{calc_histDS}
 \title{Calculate the histograms.}
 \usage{
-calc_histDS(data_name, last_tr_tree, data_classes, output_var, loss_function)
+calc_histDS(
+  data_name,
+  weight_update,
+  last_tr_tree,
+  data_classes,
+  output_var,
+  loss_function,
+  amt_trees
+)
 }
 \arguments{
 \item{data_name}{Name of the data.}
+
+\item{weight_update}{Through which method we choose the weights for our tree.}
 
 \item{last_tr_tree}{The last tree which was trained.}
 
@@ -17,6 +27,8 @@ calc_histDS(data_name, last_tr_tree, data_classes, output_var, loss_function)
 
 \item{loss_function}{The type of loss-function under which we optimizes our
 boosted tree.}
+
+\item{amt_trees}{How many trees have been built already.}
 }
 \value{
 The training features and calculated output and histograms.

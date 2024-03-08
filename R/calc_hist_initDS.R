@@ -2,12 +2,14 @@
 #' Calculate the predicted output and histograms
 #'
 #' @param data_name Name of the data.
+#' @param weight_update Through which method we choose the weights for our tree.
 #' @param output_var The name of the column containing the output.
 #' @param loss_function Type of loss function under which the tree is optimised.
 #'
 #' @return The training features and calculated output and histograms.
 #' @export
-calc_hist_initDS <- function(data_name, output_var, loss_function) {
+calc_hist_initDS <- function(data_name, weight_update, output_var,
+                             loss_function) {
   # TODO: prediction initialization -> hyper parameter optimization?
   #       could be done with average
 
@@ -39,8 +41,8 @@ calc_hist_initDS <- function(data_name, output_var, loss_function) {
       training_data$pred <- rep(0, data_amt)
       training_data$loss <- training_data[[output_var]]^2
     } else if (loss_function == "binary_cross_entropy") {
-      training_data$pred <- rep(0.5, data_amt)
-      training_data$loss <- rep(-log(0.5), data_amt)
+      training_data$pred <- rep(0, data_amt)
+      training_data$loss <- rep(-log(0), data_amt)
     } else if (loss_function == "binary_sigmoid") {
       training_data$pred <- rep(0, data_amt)
       training_data$loss <- rep(log(2), data_amt)
