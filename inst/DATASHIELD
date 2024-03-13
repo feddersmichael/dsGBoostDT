@@ -1,6 +1,7 @@
 AggregateMethods:
     data_format_checkDS,
-    split_binsDS
+    split_binsDS,
+    update_weightDS
 AssignMethods:
     calc_hist_initDS,
     calc_histDS,

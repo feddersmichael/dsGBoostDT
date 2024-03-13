@@ -123,15 +123,14 @@ data_splitDS <- function(training_data, bounds_and_levels, current_tree,
     }
   } else if (split_goal == "split_row") {
     
-    output <- training_data
+    output <- list()
+    output[[1]] <- training_data
     for (i in 1:split_row) {
       new_row <- list()
       cur_feature <- current_tree$feature[[2^(i - 1)]]
       cur_spv <- current_tree$split_value[[2^(i - 1)]]
       cont_NA <- current_tree$cont_NA[[2^(i - 1)]]
       for (j in 1:2^(i - 1)) {
-        current_row <- 2^(i - 1) + j - 1
-        
         if (data_classes[[cur_feature]] == "numeric") {
           breaks <- c(bounds_and_levels[[cur_feature]][1], cur_spv,
                       bounds_and_levels[[cur_feature]][2])
@@ -142,9 +141,22 @@ data_splitDS <- function(training_data, bounds_and_levels, current_tree,
                       include.lowest = TRUE)
         }
         
+        if (cont_NA != 0) {
+          cuts <- addNA(cuts)
+        }
+        
         data_split <- split(output[[j]], cuts)
-        new_row[[2 * (j - 1)]] <- data_split[[1]]
-        new_row[[2 * (j - 1) + 1]] <- data_split[[2]]
+        
+        if (cont_NA == 1) {
+          data_split[[1]] <- rbind(data_split[[1]], data_split[[3]])
+          data_split[[3]] <- NULL
+        } else if (cont_NA == 2) {
+          data_split[[2]] <- rbind(data_split[[2]], data_split[[3]])
+          data_split[[3]] <- NULL
+        }
+        
+        new_row[[2 * j - 1]] <- data_split[[1]]
+        new_row[[2 * j]] <- data_split[[2]]
       }
       
       output <- new_row

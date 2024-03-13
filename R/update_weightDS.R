@@ -28,13 +28,17 @@ update_weightDS <- function(data_name, current_tree, bounds_and_levels,
   if (weight_update == "average") {
     for (i in 1:length(leaves)) {
       output <- leaves[[i]][[output_var]]
-      leaf_weights[[i]][["output_sum"]] <- sum(output)
-      leaf_weights[[i]][["amt_data"]] <- length(output)
+      weight_upd <- list()
+      weight_upd[[i]][["output_sum"]] <- sum(output)
+      weight_upd[[i]][["amt_data"]] <- length(output)
+      leaf_weights[[i]] <- weight_upd
     }
   } else if (weight_update == "hessian") {
-    for (i in length(leaves)) {
-      leaf_weights[[i]][["gradient"]] <- sum(leaves[[i]]$grad)
-      leaf_weights[[i]][["hessian"]] <- sum(leaves[[i]]$hess)
+    for (i in 1:length(leaves)) {
+      weight_upd <- list()
+      weight_upd[["gradient"]] <- sum(leaves[[i]]$grad)
+      weight_upd[["hessian"]] <- sum(leaves[[i]]$hess)
+      leaf_weights[[i]] <- weight_upd
     }
   }
   
