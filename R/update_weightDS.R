@@ -29,8 +29,8 @@ update_weightDS <- function(data_name, current_tree, bounds_and_levels,
     for (i in 1:length(leaves)) {
       output <- leaves[[i]][[output_var]]
       weight_upd <- list()
-      weight_upd[[i]][["output_sum"]] <- sum(output)
-      weight_upd[[i]][["amt_data"]] <- length(output)
+      weight_upd[["output_sum"]] <- sum(output)
+      weight_upd[["amt_data"]] <- length(output)
       leaf_weights[[i]] <- weight_upd
     }
   } else if (weight_update == "hessian") {
