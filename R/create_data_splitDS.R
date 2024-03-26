@@ -17,12 +17,12 @@ create_data_splitDS <- function(data_name, output_var, drop_columns,
   data_set <- data_set[!is.na(data_set[[output_var]]), ]
 
   # Remove columns which aren't needed.
-  column_names <- colnames(data_set)
   if (!is.null(drop_columns)) {
-    if (!all(drop_columns %in% column_names)) {
-      stop("The columns which shall be removed don't exist.")
+    row_numbers <- which(colnames(data_set) %in% drop_columns)
+    if (length(row_numbers) == length(drop_columns)) {
+      data_set <- data_set[, -row_numbers]
     } else {
-      data_set <- data_set[, -which(column_names %in% drop_columns)]
+      stop("The columns which shall be removed don't exist.")
     }
   }
 

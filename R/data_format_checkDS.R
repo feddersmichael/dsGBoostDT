@@ -31,10 +31,11 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
 
   # We remove the 'drop_columns' features from the data
   if (!is.null(drop_columns)) {
-    if (!all(drop_columns %in% column_names)) {
-      stop("The columns which shall be removed don't exist.")
+    row_numbers <- which(column_names %in% drop_columns)
+    if (length(row_numbers) == length(drop_columns)) {
+      data_set <- data_set[, -row_numbers]
     } else {
-      data_set <- data_set[, -which(column_names %in% drop_columns)]
+      stop("The columns which shall be removed don't exist.")
     }
   }
 
@@ -46,6 +47,7 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
   cont_NA <- is.na(data_set[[output_var]])
 
   if (any(cont_NA)) {
+    # currently NA-data needs to be dropped if it exists.
     if (!drop_NA) {
       stop("The data contains 'NA' values in the output variable.")
     } else {
@@ -63,7 +65,8 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
             (bounds_and_levels[[column]][[1]] > bounds_and_levels[[column]][[2]])) {
         stop("For numeric features 'bounds_and_levels' should be a numeric vector of length 2 with a lower and upper limit for all elements in this column.")
       }
-
+      
+      # TODO: what if all data is NA?
       if (min(data_set[[column]], na.rm = TRUE) < bounds_and_levels[[column]][1]) {
         stop(paste0("The values in the column '", column, "' aren't restricted to the expected boundaries."))
       }
