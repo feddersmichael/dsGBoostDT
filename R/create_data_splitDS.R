@@ -35,8 +35,8 @@ create_data_splitDS <- function(data_name, output_var, drop_columns,
   training_choice <- sample.int(nrows, no_training_points)
 
   output <- list()
-  output[[1]] <- data_set[training_choice, ]
-  output[[2]] <- data_set[-training_choice, ]
+  output[["Train"]] <- data_set[training_choice, ]
+  output[["Test"]] <- data_set[-training_choice, ]
 
   return(output)
 }

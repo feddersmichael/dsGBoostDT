@@ -16,7 +16,7 @@ calc_hist_initDS <- function(data_name, weight_update, output_var,
   data_set <- eval(parse(text = paste0(data_name, "_training_test_split")),
                    envir = parent.frame())
 
-  training_data <- data_set[[1]]
+  training_data <- data_set[["Train"]]
   data_amt <- nrow(training_data)
 
   if (loss_function == "quadratic") {

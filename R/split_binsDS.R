@@ -13,6 +13,22 @@
 split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
                          data_classes) {
   # TODO: Just save data which remains after each split on the server.
+  
+  if (amt_splits == 0) {
+    training_data <- eval(parse(text = paste0(data_name, "_training")),
+                          envir = parent.frame())
+    leaves <- list(training_data)
+  } else {
+    leaves_list <- eval(parse(text = paste0(data_name, "_leaves")),
+                   envir = parent.frame())
+    if (current_tree$par_dir[[amt_splits]]) {
+      parent_leaf <- leaves_list[[2 * current_tree$par_spp[[amt_splits]] - 1]]
+    } else {
+      parent_leaf <- leaves_list[[2 * current_tree$par_spp[[amt_splits]]]]
+    }
+  }
+  
+  
 
   # We read in the data from the server and extract the features, output and
   # predicted output from the training data
@@ -22,7 +38,6 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, current_tree,
   # We only need to calculate the histogram-bins for the last two added leaves.
   # Therefore we reduce the data to the rows which are contained in the two
   # leaves.
-
   leaves <- data_splitDS(training_data, bounds_and_levels, current_tree,
                          data_classes, "leaf", nrow(current_tree))
 
