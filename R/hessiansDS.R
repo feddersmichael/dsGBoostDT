@@ -2,14 +2,16 @@
 #' Retrieve the hessian bins
 #'
 #' @param data_name The name of the data.
-#' @param bounds_and_levels List of maximum and minimum value for numeric and
-#' levels for factor features.
 #' @param spp_cand The Splitting-point candidates.
-#' @param data_classes Data class per feature. 
 #'
 #' @return The hessian bins.
 #' @export
-hessiansDS <- function(data_name, bounds_and_levels, spp_cand, data_classes) {
+hessiansDS <- function(data_name, spp_cand) {
+  
+  bounds_and_levels <- eval(parse(text = paste0(data_name, "_bounds_and_levels")),
+                            envir = parent.frame())
+  data_classes <- eval(parse(text = paste0(data_name, "_data_classes")),
+                    envir = parent.frame())
   
   training_data <- eval(parse(text = paste0(data_name, "_training")),
                         envir = parent.frame())

@@ -7,4 +7,5 @@ AssignMethods:
     calc_hist_initDS,
     calc_histDS,
     create_data_splitDS,
-    saveleafDS
+    saveleafDS,
+    save_variableDS

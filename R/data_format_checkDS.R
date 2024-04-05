@@ -7,14 +7,13 @@
 #' @param output_var The name of the output variable.
 #' @param loss_function The loss function which we use to optimize our boosted
 #' tree.
-#' @param drop_columns Which columns should be dropped from the data.
 #' @param drop_NA If NA-values should be deleted.
 #'
 #' @return The data classes for all columns.
 #' @export
 data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
-                                loss_function, drop_columns, drop_NA) {
-
+                                loss_function, drop_NA) {
+  
   if (!exists(data_name, envir = parent.frame())) {
     stop(paste0("There exists no data saved under the name '", data_name, "'."))
   }
@@ -28,6 +27,8 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
   }
 
   column_names <- colnames(data_set)
+  drop_columns <- eval(parse(text = paste0(data_name, "_drop_columns")),
+                       envir = parent.frame())
 
   # We remove the 'drop_columns' features from the data
   if (!is.null(drop_columns)) {

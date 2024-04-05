@@ -2,18 +2,12 @@
 #' Calculate the histograms.
 #'
 #' @param data_name Name of the data.
-#' @param weight_update Through which method we choose the weights for our tree.
 #' @param last_tr_tree The last tree which was trained.
-#' @param data_classes Data class for all features.
-#' @param output_var The name of the column containing the output.
-#' @param loss_function The type of loss-function under which we optimizes our
-#' boosted tree.
 #' @param amt_trees How many trees have been built already.
 #'
 #' @return The training features and calculated output and histograms.
 #' @export
-calc_histDS <- function(data_name, weight_update, last_tr_tree, data_classes,
-                        output_var, loss_function, amt_trees) {
+calc_histDS <- function(data_name, last_tr_tree, amt_trees) {
 
   # We first check all the inputs for appropriate class
   if (!is.character(data_name)) {
@@ -27,6 +21,14 @@ calc_histDS <- function(data_name, weight_update, last_tr_tree, data_classes,
   # We read in the training-data from the server and update the
   # output-prediction.
   training_data <- eval(parse(text = paste0(data_name, "_training")),
+                        envir = parent.frame())
+  weight_update <- eval(parse(text = paste0(data_name, "_weight_update")),
+                        envir = parent.frame())
+  data_classes <- eval(parse(text = paste0(data_name, "_data_classes")),
+                       envir = parent.frame())
+  output_var <- eval(parse(text = paste0(data_name, "_output_var")),
+                     envir = parent.frame())
+  loss_function <- eval(parse(text = paste0(data_name, "_loss_function")),
                         envir = parent.frame())
 
   data_by_row <- split(training_data, seq_len(nrow(training_data)))

@@ -2,16 +2,18 @@
 #' Calculate the predicted output and histograms
 #'
 #' @param data_name Name of the data.
-#' @param weight_update Through which method we choose the weights for our tree.
-#' @param output_var The name of the column containing the output.
-#' @param loss_function Type of loss function under which the tree is optimised.
-#'
 #' @return The training features and calculated output and histograms.
 #' @export
-calc_hist_initDS <- function(data_name, weight_update, output_var,
-                             loss_function) {
+  calc_hist_initDS <- function(data_name) {
   # TODO: prediction initialization -> hyper parameter optimization?
   #       could be done with average
+  
+  output_var <- eval(parse(text = paste0(data_name, "_output_var")),
+                     envir = parent.frame())
+  weight_update <- eval(parse(text = paste0(data_name, "_weight_update")),
+                     envir = parent.frame())
+  loss_function <- eval(parse(text = paste0(data_name, "_loss_function")),
+                        envir = parent.frame())
 
   data_set <- eval(parse(text = paste0(data_name, "_training_test_split")),
                    envir = parent.frame())

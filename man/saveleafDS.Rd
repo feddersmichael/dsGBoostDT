@@ -4,15 +4,10 @@
 \alias{saveleafDS}
 \title{Save the split leaves on the server.}
 \usage{
-saveleafDS(data_name, bounds_and_levels, data_classes, current_tree)
+saveleafDS(data_name, current_tree)
 }
 \arguments{
 \item{data_name}{The name of the data.}
-
-\item{bounds_and_levels}{List of maximum and minimum value for numeric and
-levels for factor features.}
-
-\item{data_classes}{Denotes for each feature if it is numeric or a factor.}
 
 \item{current_tree}{The tree which gets currently trained.}
 }

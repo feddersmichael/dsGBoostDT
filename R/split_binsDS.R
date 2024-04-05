@@ -2,14 +2,10 @@
 #' Split up the data into bins by slitting points.
 #'
 #' @param data_name The name of the data.
-#' @param bounds_and_levels List of maximum and minimum value for numeric and
-#' levels for factor features.
-#' @param spp_cand The Splitting-point candidates.
-#' @param data_classes Data class per feature.
 #'
 #' @return The histogram bins for each split in all features.
 #' @export
-split_binsDS <- function(data_name, bounds_and_levels, spp_cand, data_classes) {
+split_binsDS <- function(data_name) {
   # We read in the data from the server and extract the features, output and
   # predicted output from the training data
   leaves_list <- eval(parse(text = paste0(data_name, "_leaves")),
@@ -23,8 +19,15 @@ split_binsDS <- function(data_name, bounds_and_levels, spp_cand, data_classes) {
     leaves <- list(leaves_list[[amt_leaves - 1]],
                    leaves_list[[amt_leaves]])
   }
-
+  
+  bounds_and_levels <- eval(parse(text = paste0(data_name, "_bounds_and_levels")),
+                            envir = parent.frame())
+  data_classes <- eval(parse(text = paste0(data_name, "_data_classes")),
+                       envir = parent.frame())
+  spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
+                       envir = parent.frame())
   features <- names(bounds_and_levels)
+  
   # We also prepare our breaks to cut the data into bins
   breaks <- list()
   for (feature in features) {

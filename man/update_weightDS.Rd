@@ -4,35 +4,14 @@
 \alias{update_weightDS}
 \title{Update weights}
 \usage{
-update_weightDS(
-  data_name,
-  current_tree,
-  bounds_and_levels,
-  max_splits,
-  data_classes,
-  weight_update,
-  loss_function,
-  output_var
-)
+update_weightDS(data_name, current_tree, max_splits)
 }
 \arguments{
 \item{data_name}{The name under which the data is saved on the server.}
 
 \item{current_tree}{The fully chosen tree which misses its weights.}
 
-\item{bounds_and_levels}{The maximum and minimum values for numeric features
-and levels for factor features.}
-
 \item{max_splits}{The maximum amount of splits in the trained tree.}
-
-\item{data_classes}{List of data class per column.}
-
-\item{weight_update}{Through which method we choose the weights for our tree.}
-
-\item{loss_function}{The type of loss function under which we optimise the
-tree.}
-
-\item{output_var}{Name of the output variable.}
 }
 \value{
 The weights for each leaf.

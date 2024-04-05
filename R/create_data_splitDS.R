@@ -2,15 +2,16 @@
 #' Separate Training and Test data
 #'
 #' @param data_name Name of the data.
-#' @param output_var The name of the column containing the output.
-#' @param drop_columns Which columns should be removed from the data.
 #' @param train_test_ratio Ratio of training data of the whole data.
 #'
 #' @return The training-test split.
 #' @export
-create_data_splitDS <- function(data_name, output_var, drop_columns,
-                                train_test_ratio) {
-
+create_data_splitDS <- function(data_name, train_test_ratio) {
+  
+  drop_columns <- eval(parse(text = paste0(data_name, "_drop_columns")),
+                       envir = parent.frame())
+  output_var <- eval(parse(text = paste0(data_name, "_output_var")),
+                     envir = parent.frame())
   data_set <- eval(parse(text = data_name), envir = parent.frame())
 
   # We remove the rows which contain 'NA' values in the output variable.

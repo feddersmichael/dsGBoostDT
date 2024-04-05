@@ -4,17 +4,12 @@
 \alias{hessiansDS}
 \title{Retrieve the hessian bins}
 \usage{
-hessiansDS(data_name, bounds_and_levels, spp_cand, data_classes)
+hessiansDS(data_name, spp_cand)
 }
 \arguments{
 \item{data_name}{The name of the data.}
 
-\item{bounds_and_levels}{List of maximum and minimum value for numeric and
-levels for factor features.}
-
 \item{spp_cand}{The Splitting-point candidates.}
-
-\item{data_classes}{Data class per feature.}
 }
 \value{
 The hessian bins.

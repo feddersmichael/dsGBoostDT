@@ -4,17 +4,10 @@
 \alias{split_binsDS}
 \title{Split up the data into bins by slitting points.}
 \usage{
-split_binsDS(data_name, bounds_and_levels, spp_cand, data_classes)
+split_binsDS(data_name)
 }
 \arguments{
 \item{data_name}{The name of the data.}
-
-\item{bounds_and_levels}{List of maximum and minimum value for numeric and
-levels for factor features.}
-
-\item{spp_cand}{The Splitting-point candidates.}
-
-\item{data_classes}{Data class per feature.}
 }
 \value{
 The histogram bins for each split in all features.

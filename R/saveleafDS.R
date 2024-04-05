@@ -2,15 +2,11 @@
 #' Save the split leaves on the server.
 #'
 #' @param data_name The name of the data.
-#' @param bounds_and_levels List of maximum and minimum value for numeric and
-#' levels for factor features.
-#' @param data_classes Denotes for each feature if it is numeric or a factor.
 #' @param current_tree The tree which gets currently trained.
 #'
 #' @return The newly created leaves.
 #' @export
-saveleafDS <- function(data_name, bounds_and_levels, data_classes,
-                       current_tree) {
+saveleafDS <- function(data_name, current_tree) {
   
   amt_splits <- nrow(current_tree)
   if (amt_splits == 0) {
@@ -30,6 +26,11 @@ saveleafDS <- function(data_name, bounds_and_levels, data_classes,
       parent_leaf <- leaves_list[[2 * current_tree$par_spp[[amt_splits]]]]
     }
   }
+  
+  bounds_and_levels <- eval(parse(text = paste0(data_name, "_bounds_and_levels")),
+                            envir = parent.frame())
+  data_classes <- eval(parse(text = paste0(data_name, "_data_classes")),
+                       envir = parent.frame())
   
   leaves <- data_splitDS(parent_leaf, bounds_and_levels,
                          current_tree[amt_splits, ], data_classes, "leaf", 1)
