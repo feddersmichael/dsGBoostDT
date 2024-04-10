@@ -4,10 +4,12 @@
 \alias{save_variableDS}
 \title{Save a variable}
 \usage{
-save_variableDS(data_name, variable)
+save_variableDS(data_name, variable_name, variable)
 }
 \arguments{
 \item{data_name}{Name of the data.}
+
+\item{variable_name}{Name of the variable which we want to save.}
 
 \item{variable}{The variable which shall be saved.}
 }
