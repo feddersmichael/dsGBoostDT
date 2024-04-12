@@ -5,7 +5,7 @@
 #'
 #' @return The histogram bins for each split in all features.
 #' @export
-split_binsDS <- function(data_name) {
+split_binsDS <- function(data_name, amt_trees) {
   # We read in the data from the server and extract the features, output and
   # predicted output from the training data
   leaves_list <- eval(parse(text = paste0(data_name, "_leaves")),
@@ -40,7 +40,7 @@ split_binsDS <- function(data_name) {
                              length(bounds_and_levels[[feature]]))
     }
   }
-
+  
   histograms <- list()
   for (i in seq_along(leaves)){
 
@@ -53,6 +53,9 @@ split_binsDS <- function(data_name) {
     split_bin_hess <- list()
 
     for (feature in features) {
+      if (amt_trees == 40 && length(split_bin_grad) > 60) {
+        return(list(split_bin_grad, split_bin_hess))
+      }
 
       if (data_classes[[feature]] == "numeric") {
         split_bin_ref[[feature]] <- addNA(cut(leaf[[feature]],
