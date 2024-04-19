@@ -4,14 +4,14 @@
 \alias{calc_histDS}
 \title{Calculate the histograms.}
 \usage{
-calc_histDS(data_name, last_tr_tree, amt_trees)
+calc_histDS(data_name, amt_trees, removed_trees = NULL)
 }
 \arguments{
 \item{data_name}{Name of the data.}
 
-\item{last_tr_tree}{The last tree which was trained.}
-
 \item{amt_trees}{How many trees have been built already.}
+
+\item{removed_trees}{Which trees got removed for training.}
 }
 \value{
 The training features and calculated output and histograms.

@@ -1,11 +1,14 @@
 AggregateMethods:
     data_format_checkDS,
+    hessiansDS,
     split_binsDS,
-    update_weightDS,
-    hessiansDS
+    update_weightDS
 AssignMethods:
     calc_hist_initDS,
     calc_histDS,
     create_data_splitDS,
+    save_treeDS,
+    save_variableDS,
     saveleafDS,
-    save_variableDS
+    update_full_treeDS,
+    update_treeDS
