@@ -25,6 +25,9 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
                 "' has data type '", class(data_set),
                 "' instead of 'data frame'."))
   }
+  if (nrow(data_set) == 0) {
+    stop("The data set is empty.")
+  }
 
   column_names <- colnames(data_set)
   drop_columns <- eval(parse(text = paste0(data_name, "_drop_columns")),
@@ -36,7 +39,7 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
     if (length(row_numbers) == length(drop_columns)) {
       data_set <- data_set[, -row_numbers]
     } else {
-      stop("The columns which shall be removed don't exist.")
+      stop("Some of the columns which shall be removed don't exist.")
     }
   }
 
@@ -46,7 +49,6 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
   }
 
   cont_NA <- is.na(data_set[[output_var]])
-
   if (any(cont_NA)) {
     # currently NA-data needs to be dropped if it exists.
     if (!drop_NA) {
@@ -62,8 +64,8 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
     if (data_classes[[column]] == "numeric") {
 
       if (!is.numeric(bounds_and_levels[[column]]) ||
-            length(bounds_and_levels[[column]]) != 2 ||
-            (bounds_and_levels[[column]][[1]] > bounds_and_levels[[column]][[2]])) {
+          length(bounds_and_levels[[column]]) != 2 ||
+          bounds_and_levels[[column]][[1]] > bounds_and_levels[[column]][[2]]) {
         stop("For numeric features 'bounds_and_levels' should be a numeric vector of length 2 with a lower and upper limit for all elements in this column.")
       }
       
@@ -80,6 +82,9 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
       if (!is.character(bounds_and_levels[[column]])) {
         stop("For factor features 'bounds_and_levels' should be a character vector which provides the expected levels.")
       }
+      if (length(bounds_and_levels[[column]]) < 2) {
+        stop("For factor features 'bounds_and_levels' should contain at least two levels.")
+      }
 
       if (!identical(bounds_and_levels[[column]], levels(data_set[[column]]))) {
         stop(paste0("The levels of the column '", column, "' don't coincide with the expected amount or order."))
@@ -95,12 +100,12 @@ data_format_checkDS <- function(data_name, bounds_and_levels, output_var,
     }
   } else if (identical(loss_function, "binary_cross_entropy")) {
     if (!identical(data_classes[[output_var]], "numeric")
-        || !all(bounds_and_levels[[output_var]] %in% c(0, 1))) {
+        || !identical(bounds_and_levels[[output_var]], c(0, 1))) {
       stop(paste0("The loss function 'binary_cross_entropy' is not suitable for this type of data."))
     }
   } else if (identical(loss_function, "binary_sigmoid")) {
     if (!identical(data_classes[[output_var]], "numeric")
-        || !all(bounds_and_levels[[output_var]] %in% c(0, 1))) {
+        || !identical(bounds_and_levels[[output_var]], c(0, 1))) {
       stop(paste0("The loss function 'binary_sigmoid' is not suitable for this type of data."))
     }
   }

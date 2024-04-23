@@ -30,6 +30,9 @@ create_data_splitDS <- function(data_name, train_test_ratio) {
   # We extract the amount of data points and calculate our training size
   nrows <- nrow(data_set)
   no_training_points <- as.integer(nrows * train_test_ratio)
+  if (no_training_points == 0) {
+    stop("'train_test_ratio' is too small. No training data can be created.")
+  }
 
   # Now we can create a training set by selecting an amount of data points
   # according to the train_test_ratio
