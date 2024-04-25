@@ -13,21 +13,19 @@ calc_histDS <- function(data_name, amt_trees, removed_trees = NULL) {
   if (!is.character(data_name)) {
     stop("'data_name' needs to have data type 'character'.")
   }
+  training_data <- eval(parse(text = paste0(data_name, "_training")),
+                        envir = parent.frame())
   dropout_rate <- eval(parse(text = paste0(data_name, "_dropout_rate")),
                        envir = parent.frame())
+  output_var <- eval(parse(text = paste0(data_name, "_output_var")),
+                     envir = parent.frame())
+  loss_function <- eval(parse(text = paste0(data_name, "_loss_function")),
+                        envir = parent.frame())
   
   if (dropout_rate %in% c(0, 1)) {
     # We read in the training-data from the server and update the
     # output-prediction.
-    training_data <- eval(parse(text = paste0(data_name, "_training")),
-                          envir = parent.frame())
     weight_update <- eval(parse(text = paste0(data_name, "_weight_update")),
-                          envir = parent.frame())
-    data_classes <- eval(parse(text = paste0(data_name, "_data_classes")),
-                         envir = parent.frame())
-    output_var <- eval(parse(text = paste0(data_name, "_output_var")),
-                       envir = parent.frame())
-    loss_function <- eval(parse(text = paste0(data_name, "_loss_function")),
                           envir = parent.frame())
     new_pred <- eval(parse(text = paste0(data_name, "_tree_", amt_trees)),
                          envir = parent.frame())
@@ -37,9 +35,6 @@ calc_histDS <- function(data_name, amt_trees, removed_trees = NULL) {
       training_data$pred <- (new_pred + training_data$pred * (amt_trees - 1)) / amt_trees
     }
   } else {
-    
-    training_data <- eval(parse(text = paste0(data_name, "_training")),
-                          envir = parent.frame())
     amt_drops <- length(removed_trees)
     prediction <- training_data$full_tree
     for (number in removed_trees) {
@@ -49,8 +44,10 @@ calc_histDS <- function(data_name, amt_trees, removed_trees = NULL) {
     }
     training_data$pred <- prediction
   }
+  
   output <- training_data[[output_var]]
   prediction <- training_data$pred
+  
   if (loss_function == "quadratic") {
     difference <- output - prediction
     training_data$loss <- difference^2

@@ -17,8 +17,6 @@ update_weightDS <- function(data_name, current_tree, max_splits) {
                        envir = parent.frame())
   weight_update <- eval(parse(text = paste0(data_name, "_weight_update")),
                         envir = parent.frame())
-  loss_function <- eval(parse(text = paste0(data_name, "_loss_function")),
-                        envir = parent.frame())
   output_var <- eval(parse(text = paste0(data_name, "_output_var")),
                      envir = parent.frame())
   
