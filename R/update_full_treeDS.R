@@ -11,6 +11,8 @@ update_full_treeDS <- function(data_name, removed_trees, last_tree_nmb) {
   
   training_data <- eval(parse(text = paste0(data_name, "_training")),
                     envir = parent.frame())
+  weight_update <- eval(parse(text = paste0(data_name, "_weight_update")),
+                        envir = parent.frame())
   full_tree <- training_data$full_tree
   amt_drops <- length(removed_trees)
   for (number in removed_trees) {
@@ -20,7 +22,12 @@ update_full_treeDS <- function(data_name, removed_trees, last_tree_nmb) {
   }
   last_tree <- eval(parse(text = paste0(data_name, "_tree_", last_tree_nmb)),
                     envir = parent.frame())
-  training_data$full_tree <- full_tree + last_tree
+  if (weight_update == "hessian") {
+    training_data$full_tree <- full_tree + last_tree
+  } else if (weight_update == "average") {
+    # TODO: Update if loss function with initial value != 0 exists
+    training_data$full_tree <- (last_tree + full_tree * (last_tree_nmb - 1)) / last_tree_nmb
+  }
   
   return(training_data)
 }
