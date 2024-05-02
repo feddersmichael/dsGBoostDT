@@ -27,7 +27,6 @@ calc_histDS <- function(data_name, amt_trees, removed_trees = NULL) {
   }
   training_data$pred <- prediction
   output <- training_data[[output_var]]
-  prediction <- training_data$pred
   
   if (loss_function == "quadratic") {
     difference <- output - prediction

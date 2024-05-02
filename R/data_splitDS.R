@@ -17,7 +17,7 @@
 data_splitDS <- function(training_data, bounds_and_levels, current_tree,
                          data_classes, split_goal, split_row) {
   
-  if (split_goal == "leaf"){
+  if (split_goal == "leaf") {
     if (split_row == 0) {
       output <- list(training_data)
     } else if (split_row == 1) {

@@ -4,12 +4,10 @@
 \alias{hessiansDS}
 \title{Retrieve the hessian bins}
 \usage{
-hessiansDS(data_name, spp_cand)
+hessiansDS(data_name)
 }
 \arguments{
 \item{data_name}{The name of the data.}
-
-\item{spp_cand}{The Splitting-point candidates.}
 }
 \value{
 The hessian bins.

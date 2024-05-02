@@ -4,14 +4,12 @@
 \alias{update_weightDS}
 \title{Update weights}
 \usage{
-update_weightDS(data_name, current_tree, max_splits)
+update_weightDS(data_name, current_tree)
 }
 \arguments{
 \item{data_name}{The name under which the data is saved on the server.}
 
 \item{current_tree}{The fully chosen tree which misses its weights.}
-
-\item{max_splits}{The maximum amount of splits in the trained tree.}
 }
 \value{
 The weights for each leaf.

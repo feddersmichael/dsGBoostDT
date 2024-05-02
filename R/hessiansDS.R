@@ -2,17 +2,17 @@
 #' Retrieve the hessian bins
 #'
 #' @param data_name The name of the data.
-#' @param spp_cand The Splitting-point candidates.
 #'
 #' @return The hessian bins.
 #' @export
-hessiansDS <- function(data_name, spp_cand) {
+hessiansDS <- function(data_name) {
   
   bounds_and_levels <- eval(parse(text = paste0(data_name, "_bounds_and_levels")),
                             envir = parent.frame())
   data_classes <- eval(parse(text = paste0(data_name, "_data_classes")),
                     envir = parent.frame())
-  
+  spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
+                   envir = parent.frame())
   training_data <- eval(parse(text = paste0(data_name, "_training")),
                         envir = parent.frame())
   features <- names(bounds_and_levels)
