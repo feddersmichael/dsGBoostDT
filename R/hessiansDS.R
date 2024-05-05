@@ -7,15 +7,23 @@
 #' @export
 hessiansDS <- function(data_name) {
   
+  training_data <- eval(parse(text = paste0(data_name, "_training")),
+                        envir = parent.frame())
   bounds_and_levels <- eval(parse(text = paste0(data_name, "_bounds_and_levels")),
                             envir = parent.frame())
   data_classes <- eval(parse(text = paste0(data_name, "_data_classes")),
                     envir = parent.frame())
   spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
                    envir = parent.frame())
-  training_data <- eval(parse(text = paste0(data_name, "_training")),
+  selected_feat <- eval(parse(text = paste0(data_name, "_selected_feat")),
                         envir = parent.frame())
-  features <- names(bounds_and_levels)
+  
+  if (is.null(selected_feat)) {
+    features <- names(data_classes)
+  } else {
+    features <- selected_feat
+  }
+  
   numerics <- sapply(features, function(name){return(data_classes[[name]] == "numeric")})
   features <- features[numerics]
   # We also prepare our breaks to cut the data into bins

@@ -26,7 +26,14 @@ split_binsDS <- function(data_name) {
                        envir = parent.frame())
   spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
                        envir = parent.frame())
-  features <- names(bounds_and_levels)
+  selected_feat <- eval(parse(text = paste0(data_name, "_selected_feat")),
+                        envir = parent.frame())
+  
+  if (is.null(selected_feat)) {
+    features <- names(data_classes)
+  } else {
+    features <- selected_feat
+  }
   
   # We also prepare our breaks to cut the data into bins
   breaks <- list()
