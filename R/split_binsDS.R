@@ -5,11 +5,13 @@
 #'
 #' @return The histogram bins for each split in all features.
 #' @export
-split_binsDS <- function(data_name) {
+split_binsDS <- function(data_name, leaves_list = NULL) {
   # We read in the data from the server and extract the features, output and
   # predicted output from the training data
-  leaves_list <- eval(parse(text = paste0(data_name, "_leaves")),
-                      envir = parent.frame())
+  if (is.null(leaves_list)) {
+    leaves_list <- eval(parse(text = paste0(data_name, "_leaves")),
+                        envir = parent.frame())
+  }
 
   # We only need to calculate the histogram-bins for the last two added leaves.
   amt_leaves <- length(leaves_list)
