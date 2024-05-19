@@ -37,7 +37,7 @@ gen_spp_candDS <- function(data_name, cand_select = NULL) {
   
   # TODO: Use hessians calculated by last tree
   if (cand_select[["numeric"]] == "ithess" && new_num_spp) {
-    if (exists("spp_cand", envir = parent.frame())) {
+    if (exists(paste0(data_name, "_spp_cand"), envir = parent.frame())) {
       prev_spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
                             envir = parent.frame())
     } else {
@@ -61,16 +61,15 @@ gen_spp_candDS <- function(data_name, cand_select = NULL) {
           add_par <- list(hessians = hessians[[feature]],
                           prev_spp_cand = prev_spp_cand[[feature]])
         }
-        spp_cand[[feature]] <- gen_numeric_spp_candDS(bounds_and_levels[[feature]],
-                                                      amt_spp[[feature]],
-                                                      cand_select[["numeric"]],
-                                                      add_par)
+        spp_cand[[feature]] <- dsGBoostDTClient::ds.gen_numeric_spp_cand(bounds_and_levels[[feature]],
+                                                                         amt_spp[[feature]],
+                                                                         cand_select[["numeric"]], add_par)
       } else {
         spp_cand[[feature]] <- add_par[["spp_cand"]][[feature]]
       }
     } else {
-      spp_cand[[feature]] <- ds.gen_factor_spp_cand(length(bounds_and_levels[[feature]]),
-                                                    amt_spp[[feature]], cand_select[["factor"]])
+      spp_cand[[feature]] <- dsGBoostDTClient::ds.gen_factor_spp_cand(length(bounds_and_levels[[feature]]),
+                                                                      amt_spp[[feature]], cand_select[["factor"]])
     }
   }
   

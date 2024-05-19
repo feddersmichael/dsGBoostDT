@@ -2,12 +2,11 @@
 #' Calculate the histograms.
 #'
 #' @param data_name Name of the data.
-#' @param amt_trees How many trees have been built already.
 #' @param removed_trees Which trees got removed for training.
 #'
 #' @return The training features and calculated output and histograms.
 #' @export
-calc_histDS <- function(data_name, amt_trees, removed_trees = NULL) {
+calc_histDS <- function(data_name, removed_trees = NULL) {
 
   # We first check all the inputs for appropriate class
   if (!is.character(data_name)) {
