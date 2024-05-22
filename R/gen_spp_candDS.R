@@ -1,4 +1,11 @@
 
+#' Title Create splitting-point candidates.
+#'
+#' @param data_name Name of the data.
+#' @param cand_select By which method the candidates shall be selected.
+#'
+#' @return The splitting-point candidates.
+#' @export
 gen_spp_candDS <- function(data_name, cand_select = NULL) {
   
   if (is.null(cand_select)) {
@@ -33,18 +40,13 @@ gen_spp_candDS <- function(data_name, cand_select = NULL) {
     }
   } else {
     new_num_spp <- TRUE
+    # TODO: Only if ithess
+    selected_feat <- NULL
   }
   
   # TODO: Use hessians calculated by last tree
   if (cand_select[["numeric"]] == "ithess" && new_num_spp) {
-    if (exists(paste0(data_name, "_spp_cand"), envir = parent.frame())) {
-      prev_spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
-                            envir = parent.frame())
-    } else {
-      prev_spp_cand <- gen_spp_candDS(data_name, list(numeric = "uniform",
-                                                      factor = cand_select[["factor"]]))
-    }
-    hessians <- hessiansDS(data_name, prev_spp_cand)
+    hessians <- hessiansDS(data_name)
   }
   
   # TODO: selected features by server
@@ -54,18 +56,19 @@ gen_spp_candDS <- function(data_name, cand_select = NULL) {
     feature_choices <- selected_feat
   }
   
+  spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
+                   envir = parent.frame())
+  
   for (feature in feature_choices) {
     if (data_classes[[feature]] == "numeric") {
       if (new_num_spp) {
         if (cand_select[["numeric"]] == "ithess") {
           add_par <- list(hessians = hessians[[feature]],
-                          prev_spp_cand = prev_spp_cand[[feature]])
+                          prev_spp_cand = spp_cand[[feature]])
         }
         spp_cand[[feature]] <- dsGBoostDTClient::ds.gen_numeric_spp_cand(bounds_and_levels[[feature]],
                                                                          amt_spp[[feature]],
                                                                          cand_select[["numeric"]], add_par)
-      } else {
-        spp_cand[[feature]] <- add_par[["spp_cand"]][[feature]]
       }
     } else {
       spp_cand[[feature]] <- dsGBoostDTClient::ds.gen_factor_spp_cand(length(bounds_and_levels[[feature]]),

@@ -1,8 +1,18 @@
 
+#' Train a remote tree.
+#'
+#' @param data_name Name of the data.
+#'
+#' @return The trained tree.
+#' @export
 train_treeDS <- function(data_name) {
   
+  # We first check all the inputs for appropriate class
+  if (!is.character(data_name)) {
+    stop("'data_name' needs to have data type 'character'.")
+  }
   training_data <- eval(parse(text = paste0(data_name, "_training")),
-                    envir = parent.frame())
+                        envir = parent.frame())
   max_splits <- eval(parse(text = paste0(data_name, "_max_splits")),
                       envir = parent.frame())
   selected_feat <- eval(parse(text = paste0(data_name, "_selected_feat")),
@@ -19,6 +29,13 @@ train_treeDS <- function(data_name) {
                              w_s_left_value = numeric(), w_s_right = logical(),
                              w_s_right_value = numeric(), par_spp = numeric(),
                              par_dir = logical())
+  split_scores_left <- data.frame(sp_sc = numeric(), feature = character(),
+                                  split_val = numeric(), cont_NA = numeric(),
+                                  weight_l = numeric(), weight_r = numeric())
+  
+  split_scores_right <- data.frame(sp_sc = numeric(), feature = character(),
+                                   split_val = numeric(), cont_NA = numeric(),
+                                   weight_l = numeric(), weight_r = numeric())
   
   leaves_list <- NULL
   for (i in 1:max_splits) {
@@ -27,10 +44,10 @@ train_treeDS <- function(data_name) {
     histograms_per_leaf <- split_binsDS(data_name, leaves_list)
     amt_leaves <- length(histograms_per_leaf)
     
-    for (i in 1:amt_leaves) {
+    for (j in 1:amt_leaves) {
       cont_NA <- logical()
       for (feature in selected_feat) {
-        categories <- histograms_per_leaf[[i]][["grad"]][[feature]]
+        categories <- histograms_per_leaf[[j]][["grad"]][[feature]]
         if ("NA" %in% names(categories) && data_classes[[feature]] == "numeric" &&
             (categories["NA"] != 0)) {
           cont_NA[[feature]] <- TRUE
@@ -41,19 +58,11 @@ train_treeDS <- function(data_name) {
       histograms_per_leaf[[i]][["cont_NA"]] <- cont_NA
     }
     
-    best_split <- dsGBoostDTClient::ds.select_split(histograms_per_leave,
+    best_split <- dsGBoostDTClient::ds.select_split(histograms_per_leaf,
                                                     spp_cand, data_classes,
                                                     reg_par)
     
     if (i == 1) {
-      split_scores_left <- data.frame(sp_sc = numeric(), feature = character(),
-                                      split_val = numeric(), cont_NA = numeric(),
-                                      weight_l = numeric(), weight_r = numeric())
-      
-      split_scores_right <- data.frame(sp_sc = numeric(), feature = character(),
-                                       split_val = numeric(), cont_NA = numeric(),
-                                       weight_l = numeric(), weight_r = numeric())
-      
       next_split <- list(best_split$feature[[1]], best_split$split_val[[1]],
                          best_split$cont_NA[[1]], TRUE, best_split$weight_l[[1]],
                          TRUE, best_split$weight_r[[1]], 0, TRUE)

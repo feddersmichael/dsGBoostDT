@@ -3,6 +3,7 @@
 #'
 #' @param data_name The name of the data.
 #' @param current_tree The tree which gets currently trained.
+#' @param leaves_list The list of all leaves, input if training on server.
 #'
 #' @return The newly created leaves.
 #' @export

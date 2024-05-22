@@ -4,12 +4,14 @@
 \alias{saveleafDS}
 \title{Save the split leaves on the server.}
 \usage{
-saveleafDS(data_name, current_tree)
+saveleafDS(data_name, current_tree, leaves_list = NULL)
 }
 \arguments{
 \item{data_name}{The name of the data.}
 
 \item{current_tree}{The tree which gets currently trained.}
+
+\item{leaves_list}{The list of all leaves, input if training on server.}
 }
 \value{
 The newly created leaves.

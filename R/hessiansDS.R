@@ -5,7 +5,7 @@
 #'
 #' @return The hessian bins.
 #' @export
-hessiansDS <- function(data_name, spp_cand = NULL) {
+hessiansDS <- function(data_name) {
   
   training_data <- eval(parse(text = paste0(data_name, "_training")),
                         envir = parent.frame())
@@ -13,12 +13,8 @@ hessiansDS <- function(data_name, spp_cand = NULL) {
                             envir = parent.frame())
   data_classes <- eval(parse(text = paste0(data_name, "_data_classes")),
                     envir = parent.frame())
-  if (is.null(spp_cand)) {
-    spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
-                     envir = parent.frame())
-  } else {
-    spp_cand <- spp_cand
-  }
+  spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
+                   envir = parent.frame())
   selected_feat <- eval(parse(text = paste0(data_name, "_selected_feat")),
                         envir = parent.frame())
   

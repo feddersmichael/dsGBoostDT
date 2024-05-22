@@ -4,10 +4,12 @@
 \alias{split_binsDS}
 \title{Split up the data into bins by slitting points.}
 \usage{
-split_binsDS(data_name)
+split_binsDS(data_name, leaves_list = NULL)
 }
 \arguments{
 \item{data_name}{The name of the data.}
+
+\item{leaves_list}{The list of all leaves, input if training on server.}
 }
 \value{
 The histogram bins for each split in all features.

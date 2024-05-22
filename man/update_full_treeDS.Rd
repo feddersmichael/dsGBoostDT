@@ -4,14 +4,14 @@
 \alias{update_full_treeDS}
 \title{Save a sum of prediction through single trees.}
 \usage{
-update_full_treeDS(data_name, removed_trees, last_tree_nmb)
+update_full_treeDS(data_name, removed_trees, added_trees)
 }
 \arguments{
 \item{data_name}{Name of the data.}
 
 \item{removed_trees}{Which trees got removed for training.}
 
-\item{last_tree_nmb}{How many trees have been trained in total.}
+\item{added_trees}{Numbers of the trees added this round.}
 }
 \value{
 The full predicition.

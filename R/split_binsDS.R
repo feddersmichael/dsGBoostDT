@@ -2,6 +2,7 @@
 #' Split up the data into bins by slitting points.
 #'
 #' @param data_name The name of the data.
+#' @param leaves_list The list of all leaves, input if training on server.
 #'
 #' @return The histogram bins for each split in all features.
 #' @export
