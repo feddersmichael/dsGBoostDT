@@ -46,7 +46,7 @@ gen_spp_candDS <- function(data_name, cand_select = NULL) {
       ithess_control <- eval(parse(text = paste0(data_name, "_cand_select")),
                              envir = parent.frame())
       if (ithess_control[["numeric"]] == "ithess") {
-        selected_feat <- NULL
+        selected_feat <- names(data_classes)
       }
     }
   }
@@ -59,14 +59,7 @@ gen_spp_candDS <- function(data_name, cand_select = NULL) {
                            data_classes, spp_cand, selected_feat)
   }
   
-  # TODO: selected features by server
-  if (is.null(selected_feat)) {
-    feature_choices <- names(data_classes)
-  } else {
-    feature_choices <- selected_feat
-  }
-  
-  for (feature in feature_choices) {
+  for (feature in selected_feat) {
     if (data_classes[[feature]] == "numeric") {
       if (new_num_spp) {
         if (cand_select[["numeric"]] == "ithess") {

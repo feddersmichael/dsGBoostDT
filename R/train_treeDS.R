@@ -11,6 +11,7 @@ train_treeDS <- function(data_name) {
   if (!is.character(data_name)) {
     stop("'data_name' needs to have data type 'character'.")
   }
+  
   training_data <- eval(parse(text = paste0(data_name, "_training")),
                         envir = parent.frame())
   max_splits <- eval(parse(text = paste0(data_name, "_max_splits")),

@@ -37,17 +37,11 @@ hessiansDS <- function(data_name, training_data = NULL,
   }
   
   
-  if (is.null(selected_feat)) {
-    features <- names(data_classes)
-  } else {
-    features <- selected_feat
-  }
-  
-  numerics <- sapply(features, function(name){return(data_classes[[name]] == "numeric")})
-  features <- features[numerics]
+  numerics <- sapply(selected_feat, function(name){return(data_classes[[name]] == "numeric")})
+  selected_feat <- selected_feat[numerics]
   # We also prepare our breaks to cut the data into bins
   breaks <- list()
-  for (feature in features) {
+  for (feature in selected_feat) {
     breaks[[feature]] <- c(bounds_and_levels[[feature]][1],
                            spp_cand[[feature]],
                            bounds_and_levels[[feature]][2])
@@ -55,7 +49,7 @@ hessiansDS <- function(data_name, training_data = NULL,
   leaf <- training_data
   split_bin_ref <- list()
   split_bin_hess <- list()
-  for (feature in features) {
+  for (feature in selected_feat) {
     split_bin_ref[[feature]] <- addNA(cut(leaf[[feature]],
                                           breaks[[feature]],
                                           include.lowest = TRUE))
