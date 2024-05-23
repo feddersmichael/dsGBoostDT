@@ -23,6 +23,8 @@ gen_spp_candDS <- function(data_name, cand_select = NULL) {
                   envir = parent.frame())
   selected_feat <- eval(parse(text = paste0(data_name, "_selected_feat")),
                         envir = parent.frame())
+  spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
+                   envir = parent.frame())
   
   if (comunication_round > 1) {
     if (cand_select[["numeric"]] == "ithess") {
@@ -40,13 +42,21 @@ gen_spp_candDS <- function(data_name, cand_select = NULL) {
     }
   } else {
     new_num_spp <- TRUE
-    # TODO: Only if ithess
-    selected_feat <- NULL
+    if (cand_select[["numeric"]] == "uniform") {
+      ithess_control <- eval(parse(text = paste0(data_name, "_cand_select")),
+                             envir = parent.frame())
+      if (ithess_control[["numeric"]] == "ithess") {
+        selected_feat <- NULL
+      }
+    }
   }
   
   # TODO: Use hessians calculated by last tree
   if (cand_select[["numeric"]] == "ithess" && new_num_spp) {
-    hessians <- hessiansDS(data_name)
+    training_data <- eval(parse(text = paste0(data_name, "_training")),
+                          envir = parent.frame())
+    hessians <- hessiansDS(data_name, training_data, bounds_and_levels,
+                           data_classes, spp_cand, selected_feat)
   }
   
   # TODO: selected features by server
@@ -55,9 +65,6 @@ gen_spp_candDS <- function(data_name, cand_select = NULL) {
   } else {
     feature_choices <- selected_feat
   }
-  
-  spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
-                   envir = parent.frame())
   
   for (feature in feature_choices) {
     if (data_classes[[feature]] == "numeric") {

@@ -14,11 +14,11 @@ update_full_treeDS <- function(data_name, removed_trees, added_trees) {
   weight_update <- eval(parse(text = paste0(data_name, "_weight_update")),
                         envir = parent.frame())
   amt_drops <- length(removed_trees)
+  amt_adds <- length(added_trees)
   for (number in removed_trees) {
     cur_tree <- eval(parse(text = paste0(data_name, "_tree_", number)),
                      envir = parent.frame())
-    training_data$full_tree <- training_data$full_tree -
-                               (1 / (amt_drops + 1)) * cur_tree
+    training_data$full_tree <- training_data$full_tree - (amt_adds / (amt_drops + amt_adds)) * cur_tree
   }
   
   for (number in added_trees) {

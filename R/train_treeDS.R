@@ -15,6 +15,8 @@ train_treeDS <- function(data_name) {
                         envir = parent.frame())
   max_splits <- eval(parse(text = paste0(data_name, "_max_splits")),
                       envir = parent.frame())
+  bounds_and_levels <- eval(parse(text = paste0(data_name, "_bounds_and_levels")),
+                            envir = parent.frame())
   selected_feat <- eval(parse(text = paste0(data_name, "_selected_feat")),
                         envir = parent.frame())
   spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
@@ -40,8 +42,15 @@ train_treeDS <- function(data_name) {
   leaves_list <- NULL
   for (i in 1:max_splits) {
     
-    leaves_list <- saveleafDS(data_name, current_tree, leaves_list)
-    histograms_per_leaf <- split_binsDS(data_name, leaves_list)
+    if (i == 1) {
+      leaves_list <- list(training_data)
+    } else {
+      leaves_list <- saveleafDS(data_name, current_tree, leaves_list,
+                                bounds_and_levels, data_classes)
+    }
+    histograms_per_leaf <- split_binsDS(data_name, leaves_list,
+                                        bounds_and_levels, data_classes,
+                                        spp_cand, selected_feat)
     amt_leaves <- length(histograms_per_leaf)
     
     for (j in 1:amt_leaves) {
@@ -55,7 +64,7 @@ train_treeDS <- function(data_name) {
           cont_NA[[feature]] <- FALSE
         }
       }
-      histograms_per_leaf[[i]][["cont_NA"]] <- cont_NA
+      histograms_per_leaf[[j]][["cont_NA"]] <- cont_NA
     }
     
     best_split <- dsGBoostDTClient::ds.select_split(histograms_per_leaf,
@@ -106,6 +115,7 @@ train_treeDS <- function(data_name) {
         break
       }
     }
+    
   }
   
   return(current_tree)

@@ -4,10 +4,28 @@
 \alias{hessiansDS}
 \title{Retrieve the hessian bins}
 \usage{
-hessiansDS(data_name)
+hessiansDS(
+  data_name,
+  training_data = NULL,
+  bounds_and_levels = NULL,
+  data_classes = NULL,
+  spp_cand = NULL,
+  selected_feat = NULL
+)
 }
 \arguments{
 \item{data_name}{The name of the data.}
+
+\item{training_data}{The data which we use to build the tree.}
+
+\item{bounds_and_levels}{Bounds for numeric columns and levels for factors.}
+
+\item{data_classes}{Data class for all features.}
+
+\item{spp_cand}{The split-point candidates for which the bins were
+calculated.}
+
+\item{selected_feat}{Which part of the feature space we use to build}
 }
 \value{
 The hessian bins.

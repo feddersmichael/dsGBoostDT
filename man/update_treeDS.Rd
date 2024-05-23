@@ -4,7 +4,7 @@
 \alias{update_treeDS}
 \title{Update weight of the prediction of a tree.}
 \usage{
-update_treeDS(data_name, tree_number, amt_drops)
+update_treeDS(data_name, tree_number, amt_drops, amt_adds)
 }
 \arguments{
 \item{data_name}{Name of the data.}
@@ -12,6 +12,8 @@ update_treeDS(data_name, tree_number, amt_drops)
 \item{tree_number}{Which tree shall be updated.}
 
 \item{amt_drops}{How many trees were dropped for the training.}
+
+\item{amt_adds}{How many trees were added this round}
 }
 \value{
 The adapted tree.

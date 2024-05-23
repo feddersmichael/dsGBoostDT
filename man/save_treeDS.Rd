@@ -4,7 +4,7 @@
 \alias{save_treeDS}
 \title{Save the prediction through a tree.}
 \usage{
-save_treeDS(data_name, tree, amt_drops)
+save_treeDS(data_name, tree, amt_drops, amt_adds)
 }
 \arguments{
 \item{data_name}{Name of the data.}
@@ -12,6 +12,8 @@ save_treeDS(data_name, tree, amt_drops)
 \item{tree}{The trained tree which shall be saved.}
 
 \item{amt_drops}{How many trees got dropped.}
+
+\item{amt_adds}{How many trees were added this round}
 }
 \value{
 The prediction through the newly trained tree.

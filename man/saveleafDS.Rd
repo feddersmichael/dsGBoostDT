@@ -4,7 +4,13 @@
 \alias{saveleafDS}
 \title{Save the split leaves on the server.}
 \usage{
-saveleafDS(data_name, current_tree, leaves_list = NULL)
+saveleafDS(
+  data_name,
+  current_tree,
+  leaves_list = NULL,
+  bounds_and_levels = NULL,
+  data_classes = NULL
+)
 }
 \arguments{
 \item{data_name}{The name of the data.}
@@ -12,6 +18,11 @@ saveleafDS(data_name, current_tree, leaves_list = NULL)
 \item{current_tree}{The tree which gets currently trained.}
 
 \item{leaves_list}{The list of all leaves, input if training on server.}
+
+\item{bounds_and_levels}{The maximum and minimum values for numeric features
+and levels for factor features.}
+
+\item{data_classes}{Data class for all features.}
 }
 \value{
 The newly created leaves.

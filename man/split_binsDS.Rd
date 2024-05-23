@@ -4,12 +4,29 @@
 \alias{split_binsDS}
 \title{Split up the data into bins by slitting points.}
 \usage{
-split_binsDS(data_name, leaves_list = NULL)
+split_binsDS(
+  data_name,
+  leaves_list = NULL,
+  bounds_and_levels = NULL,
+  data_classes = NULL,
+  spp_cand = NULL,
+  selected_feat = NULL
+)
 }
 \arguments{
 \item{data_name}{The name of the data.}
 
 \item{leaves_list}{The list of all leaves, input if training on server.}
+
+\item{bounds_and_levels}{Bounds for numeric columns and levels for factors.}
+
+\item{data_classes}{Data class for all features.}
+
+\item{spp_cand}{The split-point candidates for which the bins were
+calculated.}
+
+\item{selected_feat}{Which part of the feature space we use to build
+the tree.}
 }
 \value{
 The histogram bins for each split in all features.
