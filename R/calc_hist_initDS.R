@@ -31,6 +31,16 @@
     # training_data$loss <- training_data[[output_var]]^2
     training_data$grad <- -2 * training_data[[output_var]]
     training_data$hess <- rep(2, data_amt)
+  } else if (loss_function == "L_2") {
+    amt_outp_dim <- length(output_var)
+    
+    if (dropout_rate < 1) {
+      training_data$full_tree <- rep(0, data_amt)
+    }
+    training_data$pred <- rep(0, data_amt)
+    # training_data$loss <- training_data[[output_var]]^2
+    training_data$grad <- -2 * training_data[[output_var]]
+    training_data$hess <- rep(2, data_amt)
   } else if (loss_function == "binary_cross_entropy") {
     if (dropout_rate < 1) {
       training_data$full_tree <- rep(0.5, data_amt)
