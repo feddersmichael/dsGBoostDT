@@ -13,7 +13,7 @@ gen_spp_candDS <- function(data_name, cand_select = NULL) {
                         envir = parent.frame())
   }
   
-  comunication_round <- eval(parse(text = paste0(data_name, "_comunication_round")),
+  communication_round <- eval(parse(text = paste0(data_name, "_communication_round")),
                              envir = parent.frame())
   bounds_and_levels <- eval(parse(text = paste0(data_name, "_bounds_and_levels")),
                             envir = parent.frame())
@@ -26,11 +26,11 @@ gen_spp_candDS <- function(data_name, cand_select = NULL) {
   spp_cand <- eval(parse(text = paste0(data_name, "_spp_cand")),
                    envir = parent.frame())
   
-  if (comunication_round > 1) {
+  if (communication_round > 1) {
     if (cand_select[["numeric"]] == "ithess") {
       ithess_stop <- eval(parse(text = paste0(data_name, "_ithess_stop")),
                           envir = parent.frame())
-      if (comunication_round > (ithess_stop + 1)) {
+      if (communication_round > (ithess_stop + 1)) {
         new_num_spp <- FALSE
       } else {
         new_num_spp <- TRUE
